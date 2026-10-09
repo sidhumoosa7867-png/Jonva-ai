@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>jonva AI</title>
+  <!-- Google Official Sign-In SDK -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 30%, #0a1128 0%, #030712 100%);
+      --text-main: #ffffff;
+      --text-sub: #94a3b8;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-border: rgba(56, 189, 248, 0.25);
+      --dock-bg: rgba(15, 23, 42, 0.9);
+      --dock-grad: linear-gradient(to top, #030712 70%, transparent 100%);
+      --accent-glow: #00e5ff;
+      --header-icon-bg: rgba(255, 255, 255, 0.06);
+      --modal-bg: #0f172a;
+    }
+
+    body.light-theme {
+      --bg-gradient: radial-gradient(circle at 50% 30%, #f8fafc 0%, #e2e8f0 100%);
+      --text-main: #0f172a;
+      --text-sub: #64748b;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(2, 132, 199, 0.25);
+      --dock-bg: rgba(255, 255, 255, 0.95);
+      --dock-grad: linear-gradient(to top, #e2e8f0 70%, transparent 100%);
+      --accent-glow: #0284c7;
+      --header-icon-bg: rgba(0, 0, 0, 0.06);
+      --modal-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      z-index: 20;
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent-glow);
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+    }
+    .top-icons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .icon-btn {
+      background: var(--header-icon-bg);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-sub);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .icon-btn:active { transform: scale(0.92); }
+
+    .main-stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      margin-top: -30px;
+    }
+
+    .status-badge {
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      color: var(--accent-glow);
+      font-size: 12px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .orb-container {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .orb-ring-outer {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 2px dashed rgba(0, 229, 255, 0.4);
+      animation: rotateRing 20s linear infinite;
+    }
+    .orb-ring-inner {
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+    .orb-core {
+      position: absolute;
+      inset: 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #00f0ff 0%, #2563eb 50%, #7c3aed 100%);
+      box-shadow: 0 0 50px rgba(0, 229, 255, 0.5), inset 0 0 25px rgba(255, 255, 255, 0.4);
+      transition: all 0.3s ease;
+    }
+    .orb-container.thinking .orb-core {
+      animation: pulseThinking 0.8s ease-in-out infinite alternate;
+      box-shadow: 0 0 65px rgba(250, 204, 21, 0.8);
+      background: radial-gradient(circle, #facc15 0%, #ea580c 100%);
+    }
+    .orb-container.speaking .orb-core {
+      animation: pulseSpeak 1.2s ease-in-out infinite alternate;
+      box-shadow: 0 0 75px rgba(0, 229, 255, 0.9), inset 0 0 35px rgba(236, 72, 153, 0.8);
+    }
+    .mic-svg {
+      position: relative;
+      z-index: 5;
+      width: 32px;
+      height: 32px;
+      fill: #ffffff;
+    }
+
+    @keyframes rotateRing { 100% { transform: rotate(360deg); } }
+    @keyframes pulseSpeak { 0% { transform: scale(0.96); } 100% { transform: scale(1.08); } }
+    @keyframes pulseThinking { 0% { transform: scale(0.92); } 100% { transform: scale(1.05); } }
+
+    .sub-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px 20px;
+      max-width: 480px;
+      width: 100%;
+      margin-top: 30px;
+      min-height: 80px;
+      backdrop-filter: blur(10px);
+    }
+    .user-line {
+      font-size: 13px;
+      color: var(--accent-glow);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .ai-line {
+      font-size: 15px;
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 24px;
+    }
+
+    /* Thinking Dots Animation */
+    .thinking-anim {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #38bdf8;
+      font-style: italic;
+    }
+    .thinking-dot {
+      width: 6px;
+      height: 6px;
+      background: #38bdf8;
+      border-radius: 50%;
+      animation: blink 1.4s infinite both;
+    }
+    .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+    .thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink { 0%, 80%, 100% { opacity: 0.2; } 40% { opacity: 1; } }
+
+    .bottom-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 12px 18px 24px;
+      display: flex;
+      justify-content: center;
+      z-index: 30;
+      background: var(--dock-grad);
+    }
+    .bar-pill {
+      background: var(--dock-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 35px;
+      display: flex;
+      align-items: center;
+      padding: 6px 8px 6px 18px;
+      max-width: 500px;
+      width: 100%;
+    }
+    .bar-pill input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-main);
+      font-size: 15px;
+      flex: 1;
+    }
+    .bar-pill input::placeholder { color: var(--text-sub); }
+    .send-circle {
+      background: var(--accent-glow);
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #030712;
+      transition: transform 0.2s;
+    }
+    .send-circle:active { transform: scale(0.92); }
+
+    /* Modals & Menus */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+    }
+    .dialog {
+      background: var(--modal-bg);
+      border: 1px solid #334155;
+      padding: 24px;
+      border-radius: 18px;
+      width: 90%;
+      max-width: 380px;
+      color: var(--text-main);
+    }
+    .dialog h3 { margin-bottom: 15px; text-align: center; color: var(--accent-glow); }
+    .dialog input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: rgba(125,125,125,0.1);
+      color: var(--text-main);
+      outline: none;
+    }
+    .action-btn {
+      width: 100%;
+      padding: 12px;
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .google-btn-box {
+      width: 100%;
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Menu Dropdown */
+    .menu-popup {
+      display: none;
+      position: absolute;
+      top: 65px;
+      right: 70px;
+      background: var(--modal-bg);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 10px;
+      min-width: 180px;
+      z-index: 50;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .menu-item {
+      padding: 10px 14px;
+      color: var(--text-main);
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .menu-item:hover { background: rgba(0, 229, 255, 0.15); color: var(--accent-glow); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">jonva AI</div>
+    <div class="top-icons">
+      <div class="icon-btn" id="muteBtn" onclick="toggleMute()" title="Mute/Unmute">🔊</div>
+      <div class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Theme Badlein">🌙</div>
+      <div class="icon-btn" id="menuBtn" onclick="toggleMenu()" title="Menu">🔲</div>
+      <div class="icon-btn" id="userBtn" onclick="openProfileOrLogin()" title="Account">👤</div>
+    </div>
+  </header>
+
+  <!-- Quick Menu -->
+  <div class="menu-popup" id="menuPopup">
+    <div class="menu-item" onclick="clearChat()">🗑️ Chat Saaf Karein</div>
+    <div class="menu-item" onclick="alert('jonva AI Engine: Groq High-Speed (Active)')">⚡ Engine: Groq AI</div>
+    <div class="menu-item" onclick="alert('jonva AI Voice: Edge Neural HD')">🎙️ Voice: Neural HD</div>
+  </div>
+
+  <div class="main-stage">
+    <div class="status-badge" id="statusBadge">सिस्टम ऑनलाइन | रेडी</div>
+    
+    <div class="orb-container" id="orbBtn" onclick="startVoiceInput()">
+      <div class="orb-ring-outer"></div>
+      <div class="orb-ring-inner"></div>
+      <div class="orb-core"></div>
+      <svg class="mic-svg" viewBox="0 0 24 24">
+        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+      </svg>
+    </div>
+
+    <div class="sub-card">
+      <div class="user-line" id="userQuery">सर: "..."</div>
+      <div class="ai-line" id="aiReply">jonva AI तैयार है, पूछिए सर।</div>
+    </div>
+  </div>
+
+  <div class="bottom-dock">
+    <div class="bar-pill">
+      <input type="text" id="textInput" placeholder="कमांड दें या कुछ भी पूछें..." onkeypress="if(event.key==='Enter') sendPrompt()">
+      <button class="send-circle" onclick="sendPrompt()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="overlay" id="authModal">
+    <div class="dialog">
+      <h3 id="authTitle">jonva AI में लॉगिन</h3>
+      <div id="authErr" style="color:#ef4444; font-size:13px; margin-bottom:10px; display:none;"></div>
+      
+      <input type="text" id="authName" placeholder="पूरा नाम" style="display:none;">
+      <input type="email" id="authEmail" placeholder="ईमेल आईडी">
+      <input type="password" id="authPassword" placeholder="पासवर्ड">
+      
+      <button class="action-btn" onclick="submitAuth()">आगे बढ़ें</button>
+      
+      <!-- Official Google Sign In Button Container -->
+      <div class="google-btn-box">
+        <div id="g_id_onload"
+             data-client_id="21441464926-phib84akp4ro376dch70c78mjumghcoi.apps.googleusercontent.com"
+             data-callback="handleGoogleLogin"
+             data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
+      </div>
+
+      <div style="text-align:center; margin-top:14px; font-size:13px; color:var(--text-sub);">
+        <span id="authToggleMsg">खाता नहीं है? </span>
+        <a href="javascript:void(0)" onclick="toggleAuthMode()" id="authToggleLink" style="color:var(--accent-glow); text-decoration:none;">साइन-अप करें</a>
+      </div>
+      <div style="text-align:center; margin-top:10px;">
+        <a href="javascript:void(0)" onclick="closeModal('authModal')" style="color:var(--text-sub); font-size:12px;">रद्द करें</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div class="overlay" id="profileModal">
+    <div class="dialog">
+      <h3>आपकी प्रोफ़ाइल</h3>
+      <p id="profName" style="font-weight:600; font-size:16px; margin-bottom:4px;"></p>
+      <p id="profEmail" style="color:var(--text-sub); font-size:14px; margin-bottom:12px;"></p>
+      <div id="adminBadge" style="display:none; background:rgba(234, 179, 8, 0.15); color:#facc15; border:1px solid #eab308; padding:5px; border-radius:6px; font-size:12px; margin-bottom:14px; text-align:center;">👑 सिस्टम एडमिनिस्ट्रेटर</div>
+      
+      <button class="action-btn" style="background:#dc2626;" onclick="logoutUser()">लॉगआउट करें</button>
+      <div style="text-align:center; margin-top:14px;">
+        <a href="javascript:void(0)" onclick="closeModal('profileModal')" style="color:var(--text-sub); font-size:12px;">बंद करें</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isSignUp = false;
+    let currentUser = null;
+    let isMuted = false;
+    let currentAudio = null;
+    let typeWriterTimer = null;
+
+    // 1. Theme Toggle (Dark / Light)
+    function toggleTheme() {
+      document.body.classList.toggle('light-theme');
+      const isLight = document.body.classList.contains('light-theme');
+      document.getElementById('themeBtn').innerText = isLight ? '☀️' : '🌙';
+      localStorage.setItem('jonva_theme', isLight ? 'light' : 'dark');
+    }
+
+    if (localStorage.getItem('jonva_theme') === 'light') {
+      document.body.classList.add('light-theme');
+      document.getElementById('themeBtn').innerText = '☀️';
+    }
+
+    // 2. Mute Toggle
+    function toggleMute() {
+      isMuted = !isMuted;
+      document.getElementById('muteBtn').innerText = isMuted ? '🔇' : '🔊';
+      if (isMuted && currentAudio) {
+        currentAudio.pause();
+      }
+      document.getElementById('statusBadge').innerText = isMuted ? "आवाज़ म्यूट है" : "सिस्टम ऑनलाइन | रेडी";
+    }
+
+    // 3. Quick Menu
+    function toggleMenu() {
+      const m = document.getElementById('menuPopup');
+      m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+    }
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#menuBtn') && !e.target.closest('#menuPopup')) {
+        document.getElementById('menuPopup').style.display = 'none';
+      }
+    });
+
+    function clearChat() {
+      document.getElementById('userQuery').innerText = 'सर: "..."';
+      document.getElementById('aiReply').innerText = 'चैट साफ़ कर दी गई है।';
+      toggleMenu();
+    }
+
+    // 4. Live Typewriter Effect Function
+    function typeWrite(text, element, speed = 25) {
+      if (typeWriterTimer) clearInterval(typeWriterTimer);
+      element.innerText = '';
+      let i = 0;
+      typeWriterTimer = setInterval(() => {
+        if (i < text.length) {
+          element.innerText += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(typeWriterTimer);
+        }
+      }, speed);
+    }
+
+    // 5. Chat & Voice Workflow
+    async function askJonva(prompt) {
+      document.getElementById('userQuery').innerText = `सर: "${prompt}"`;
+      
+      // Thinking Animation Trigger
+      const orb = document.getElementById('orbBtn');
+      orb.classList.remove('speaking');
+      orb.classList.add('thinking');
+      document.getElementById('statusBadge').innerText = "jonva AI विचार कर रहा है...";
+      document.getElementById('aiReply').innerHTML = `
+        <span class="thinking-anim">
+          <span class="thinking-dot"></span>
+          <span class="thinking-dot"></span>
+          <span class="thinking-dot"></span>
+          jonva AI विचार कर रहा है...
+        </span>
+      `;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt })
+        });
+        const data = await res.json();
+        const reply = data.reply || "उत्तर नहीं मिल पाया";
+        
+        orb.classList.remove('thinking');
+        
+        // Typewriter animation begins
+        typeWrite(reply, document.getElementById('aiReply'), 22);
+
+        // Speak audio if not muted
+        if (!isMuted) {
+          playAudioTTS(reply);
+        } else {
+          document.getElementById('statusBadge').innerText = "सिस्टम ऑनलाइन | रेडी";
+        }
+      } catch (e) {
+        orb.classList.remove('thinking');
+        document.getElementById('aiReply').innerText = "सर्वर से संपर्क टूट गया।";
+        document.getElementById('statusBadge').innerText = "सिस्टम ऑनलाइन | रेडी";
+      }
+    }
+
+    async function playAudioTTS(text) {
+      try {
+        const orb = document.getElementById('orbBtn');
+        orb.classList.add('speaking');
+        document.getElementById('statusBadge').innerText = "jonva AI बोल रहा है... (रुकने के लिए टैप करें)";
+        
+        const res = await fetch('/api/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+        const blob = await res.blob();
+        if (currentAudio) currentAudio.pause();
+        currentAudio = new Audio(URL.createObjectURL(blob));
+        currentAudio.onended = () => {
+          orb.classList.remove('speaking');
+          document.getElementById('statusBadge').innerText = "सिस्टम ऑनलाइन | रेडी";
+        };
+        currentAudio.play();
+      } catch (e) {
+        document.getElementById('orbBtn').classList.remove('speaking');
+        document.getElementById('statusBadge').innerText = "सिस्टम ऑनलाइन | रेडी";
+      }
+    }
+
+    function sendPrompt() {
+      const input = document.getElementById('textInput');
+      const val = input.value.trim();
+      if (!val) return;
+      input.value = '';
+      askJonva(val);
+    }
+
+    function startVoiceInput() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("कृपया नीचे दिए गए बॉक्स में टाइप करें।");
+        return;
+      }
+      const rec = new SpeechRecognition();
+      rec.lang = 'hi-IN';
+      document.getElementById('statusBadge').innerText = "सुन रहा हूँ...";
+      rec.onresult = (e) => {
+        const text = e.results[0][0].transcript;
+        askJonva(text);
+      };
+      rec.onerror = () => {
+        document.getElementById('statusBadge').innerText = "सिस्टम ऑनलाइन | रेडी";
+      };
+      rec.start();
+    }
+
+    // 6. User Auth
+    async function checkLogin() {
+      try {
+        const res = await fetch('/api/auth/me');
+        const data = await res.json();
+        currentUser = data.user;
+        updateUserUI();
+      } catch (e) {}
+    }
+
+    function updateUserUI() {
+      const btn = document.getElementById('userBtn');
+      if (currentUser) {
+        btn.style.borderColor = 'var(--accent-glow)';
+        btn.style.color = 'var(--accent-glow)';
+      } else {
+        btn.style.borderColor = 'rgba(255,255,255,0.15)';
+        btn.style.color = 'var(--text-sub)';
+      }
+    }
+
+    function openProfileOrLogin() {
+      if (currentUser) {
+        document.getElementById('profName').innerText = currentUser.name;
+        document.getElementById('profEmail').innerText = currentUser.email;
+        document.getElementById('adminBadge').style.display = (currentUser.role === 'admin') ? 'block' : 'none';
+        document.getElementById('profileModal').style.display = 'flex';
+      } else {
+        document.getElementById('authModal').style.display = 'flex';
+      }
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    function toggleAuthMode() {
+      isSignUp = !isSignUp;
+      document.getElementById('authTitle').innerText = isSignUp ? "jonva AI में नया खाता" : "jonva AI में लॉगिन";
+      document.getElementById('authName').style.display = isSignUp ? "block" : "none";
+      document.getElementById('authToggleMsg').innerText = isSignUp ? "पहले से खाता है? " : "खाता नहीं है? ";
+      document.getElementById('authToggleLink').innerText = isSignUp ? "लॉगिन करें" : "साइन-अप करें";
+    }
+
+    async function submitAuth() {
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+      const name = document.getElementById('authName').value.trim();
+      const errBox = document.getElementById('authErr');
+      errBox.style.display = 'none';
+
+      const url = isSignUp ? '/api/auth/signup' : '/api/auth/login';
+      const body = isSignUp ? { name, email, password } : { email, password };
+
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          currentUser = data.user;
+          updateUserUI();
+          closeModal('authModal');
+          alert("स्वागत है!");
+        } else {
+          errBox.innerText = data.error || "त्रुटि!";
+          errBox.style.display = 'block';
+        }
+      } catch (e) {
+        errBox.innerText = "सर्वर से संपर्क नहीं हुआ";
+        errBox.style.display = 'block';
+      }
+    }
+
+    function handleGoogleLogin(response) {
+  // Google JWT टोकन डिकोड करें
+  const base64Url = response.credential.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const payload = JSON.parse(decodeURIComponent(escape(window.atob(base64))));
+
+  fetch('/api/auth/google', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: payload.email,
+      name: payload.name,
+      sub: payload.sub
+    })
+  }).then(r => r.json()).then(data => { {
+      currentUser = data.user;
+      updateUserUI();
+      closeModal('authModal');
+      alert("Google लॉगिन सफल! स्वागत है " + data.user.name);
+    }
+  }).catch(e => alert("लॉगिन में त्रुटि हुई"));
+}
+
+    async function logoutUser() {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      currentUser = null;
+      updateUserUI();
+      closeModal('profileModal');
+    }
+
+    checkLogin();
+  </script>
+</body>
+</html>
