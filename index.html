@@ -1,685 +1,1036 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<script src="https://quge5.com/88/tag.min.js" data-zone="293279" async data-cfasync="false"></script>
-  <meta charset="UTF-8">
-<meta name="monetag" content="613fff50ec71829d78acf2e8b284c370">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>jonva AI</title>
-  <!-- Google Official Sign-In SDK -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <style>
-    :root {
-      --bg-gradient: radial-gradient(circle at 50% 30%, #0a1128 0%, #030712 100%);
-      --text-main: #ffffff;
-      --text-sub: #94a3b8;
-      --card-bg: rgba(15, 23, 42, 0.75);
-      --card-border: rgba(56, 189, 248, 0.25);
-      --dock-bg: rgba(15, 23, 42, 0.9);
-      --dock-grad: linear-gradient(to top, #030712 70%, transparent 100%);
-      --accent-glow: #00e5ff;
-      --header-icon-bg: rgba(255, 255, 255, 0.06);
-      --modal-bg: #0f172a;
-    }
-
-    body.light-theme {
-      --bg-gradient: radial-gradient(circle at 50% 30%, #f8fafc 0%, #e2e8f0 100%);
-      --text-main: #0f172a;
-      --text-sub: #64748b;
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --card-border: rgba(2, 132, 199, 0.25);
-      --dock-bg: rgba(255, 255, 255, 0.95);
-      --dock-grad: linear-gradient(to top, #e2e8f0 70%, transparent 100%);
-      --accent-glow: #0284c7;
-      --header-icon-bg: rgba(0, 0, 0, 0.06);
-      --modal-bg: #ffffff;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JONVA AI — Premium Voice & Chat Assistant</title>
     
-    body {
-      background: var(--bg-gradient);
-      color: var(--text-main);
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
+    <!-- Monetag Ads Integration (Preserved) -->
+    <meta name="monetag" content="613fff50ec71829d78acf2e8b284c370">
+    <script src="https://quqe5.com/88/tag.min.js" data-zone="293279" async data-cfasync="false"></script>
+    
+    <!-- Google Identity Services SDK (Preserved) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 20px;
-      z-index: 20;
-    }
-    .logo {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--accent-glow);
-      letter-spacing: 0.5px;
-      text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
-    }
-    .top-icons {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-    .icon-btn {
-      background: var(--header-icon-bg);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: var(--text-sub);
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 16px;
-      transition: all 0.2s ease;
-      user-select: none;
-    }
-    .icon-btn:active { transform: scale(0.92); }
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="JONVA AI - Smart, fast, and mobile-first AI voice and chat assistant.">
 
-    .main-stage {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0 20px;
-      margin-top: -30px;
-    }
+    <style>
+        :root {
+            --bg-base: #030712;
+            --bg-radial: radial-gradient(circle at 50% 20%, #0a1128 0%, #030712 100%);
+            --surface-glass: rgba(15, 23, 42, 0.75);
+            --surface-border: rgba(56, 189, 248, 0.2);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --cyan-glow: #00e5ff;
+            --cyan-accent: #0284c7;
+            --cyan-deep: #0369a1;
+            --user-bubble: #0f2744;
+            --ai-bubble: rgba(15, 23, 42, 0.85);
+            --error-red: #ef4444;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
 
-    .status-badge {
-      background: rgba(0, 229, 255, 0.1);
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      color: var(--accent-glow);
-      font-size: 12px;
-      padding: 6px 16px;
-      border-radius: 20px;
-      margin-bottom: 25px;
-      transition: all 0.3s ease;
-    }
+        body.light-theme {
+            --bg-base: #f8fafc;
+            --bg-radial: radial-gradient(circle at 50% 20%, #e0f2fe 0%, #f8fafc 100%);
+            --surface-glass: rgba(255, 255, 255, 0.85);
+            --surface-border: rgba(2, 132, 199, 0.25);
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            --cyan-glow: #0284c7;
+            --cyan-accent: #0284c7;
+            --cyan-deep: #0369a1;
+            --user-bubble: #e0f2fe;
+            --ai-bubble: #ffffff;
+        }
 
-    .orb-container {
-      position: relative;
-      width: 180px;
-      height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .orb-ring-outer {
-      position: absolute;
-      inset: -6px;
-      border-radius: 50%;
-      border: 2px dashed rgba(0, 229, 255, 0.4);
-      animation: rotateRing 20s linear infinite;
-    }
-    .orb-ring-inner {
-      position: absolute;
-      inset: 6px;
-      border-radius: 50%;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-    }
-    .orb-core {
-      position: absolute;
-      inset: 16px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #00f0ff 0%, #2563eb 50%, #7c3aed 100%);
-      box-shadow: 0 0 50px rgba(0, 229, 255, 0.5), inset 0 0 25px rgba(255, 255, 255, 0.4);
-      transition: all 0.3s ease;
-    }
-    .orb-container.thinking .orb-core {
-      animation: pulseThinking 0.8s ease-in-out infinite alternate;
-      box-shadow: 0 0 65px rgba(250, 204, 21, 0.8);
-      background: radial-gradient(circle, #facc15 0%, #ea580c 100%);
-    }
-    .orb-container.speaking .orb-core {
-      animation: pulseSpeak 1.2s ease-in-out infinite alternate;
-      box-shadow: 0 0 75px rgba(0, 229, 255, 0.9), inset 0 0 35px rgba(236, 72, 153, 0.8);
-    }
-    .mic-svg {
-      position: relative;
-      z-index: 5;
-      width: 32px;
-      height: 32px;
-      fill: #ffffff;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    @keyframes rotateRing { 100% { transform: rotate(360deg); } }
-    @keyframes pulseSpeak { 0% { transform: scale(0.96); } 100% { transform: scale(1.08); } }
-    @keyframes pulseThinking { 0% { transform: scale(0.92); } 100% { transform: scale(1.05); } }
+        body {
+            font-family: var(--font-family);
+            background: var(--bg-radial);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
 
-    .sub-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 16px 20px;
-      max-width: 480px;
-      width: 100%;
-      margin-top: 30px;
-      min-height: 80px;
-      backdrop-filter: blur(10px);
-    }
-    .user-line {
-      font-size: 13px;
-      color: var(--accent-glow);
-      font-weight: 500;
-      margin-bottom: 8px;
-    }
-    .ai-line {
-      font-size: 15px;
-      color: var(--text-main);
-      line-height: 1.5;
-      min-height: 24px;
-    }
+        /* Top Header Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            background: var(--surface-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--surface-border);
+            z-index: 100;
+        }
 
-    /* Thinking Dots Animation */
-    .thinking-anim {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      color: #38bdf8;
-      font-style: italic;
-    }
-    .thinking-dot {
-      width: 6px;
-      height: 6px;
-      background: #38bdf8;
-      border-radius: 50%;
-      animation: blink 1.4s infinite both;
-    }
-    .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
-    .thinking-dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes blink { 0%, 80%, 100% { opacity: 0.2; } 40% { opacity: 1; } }
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .bottom-dock {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 12px 18px 24px;
-      display: flex;
-      justify-content: center;
-      z-index: 30;
-      background: var(--dock-grad);
-    }
-    .bar-pill {
-      background: var(--dock-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 35px;
-      display: flex;
-      align-items: center;
-      padding: 6px 8px 6px 18px;
-      max-width: 500px;
-      width: 100%;
-    }
-    .bar-pill input {
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--text-main);
-      font-size: 15px;
-      flex: 1;
-    }
-    .bar-pill input::placeholder { color: var(--text-sub); }
-    .send-circle {
-      background: var(--accent-glow);
-      border: none;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #030712;
-      transition: transform 0.2s;
-    }
-    .send-circle:active { transform: scale(0.92); }
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--surface-border);
+            color: var(--text-main);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-    /* Modals & Menus */
-    .overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(6px);
-    }
-    .dialog {
-      background: var(--modal-bg);
-      border: 1px solid #334155;
-      padding: 24px;
-      border-radius: 18px;
-      width: 90%;
-      max-width: 380px;
-      color: var(--text-main);
-    }
-    .dialog h3 { margin-bottom: 15px; text-align: center; color: var(--accent-glow); }
-    .dialog input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 10px;
-      border: 1px solid #334155;
-      background: rgba(125,125,125,0.1);
-      color: var(--text-main);
-      outline: none;
-    }
-    .action-btn {
-      width: 100%;
-      padding: 12px;
-      background: #0284c7;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .google-btn-box {
-      width: 100%;
-      margin-top: 14px;
-      display: flex;
-      justify-content: center;
-    }
+        .icon-btn:active {
+            transform: scale(0.92);
+        }
 
-    /* Menu Dropdown */
-    .menu-popup {
-      display: none;
-      position: absolute;
-      top: 65px;
-      right: 70px;
-      background: var(--modal-bg);
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 10px;
-      min-width: 180px;
-      z-index: 50;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    }
-    .menu-item {
-      padding: 10px 14px;
-      color: var(--text-main);
-      font-size: 14px;
-      cursor: pointer;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .menu-item:hover { background: rgba(0, 229, 255, 0.15); color: var(--accent-glow); }
-  </style>
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-badge {
+            background: linear-gradient(135deg, var(--cyan-glow), var(--cyan-deep));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-top: 60px;
+            margin-bottom: 78px;
+            padding: 12px 16px;
+            overflow-y: auto;
+        }
+
+        /* Luminous Voice Orb Section */
+        .orb-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 0 16px;
+            min-height: 230px;
+        }
+
+        .orb-wrapper {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .orb-ring-outer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 229, 255, 0.35);
+            animation: spin-ring 18s linear infinite;
+            transition: all 0.3s ease;
+        }
+
+        .orb-glow {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.45) 0%, rgba(2, 132, 199, 0.1) 60%, transparent 80%);
+            filter: blur(12px);
+            animation: breathe 3.5s ease-in-out infinite;
+        }
+
+        .orb-core {
+            position: relative;
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #00e5ff 0%, #0369a1 50%, #0a1128 100%);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .orb-core svg {
+            width: 38px;
+            height: 38px;
+            fill: #ffffff;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+        }
+
+        /* Orb State Animations */
+        @keyframes breathe {
+            0%, 100% { transform: scale(0.95); opacity: 0.6; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+
+        @keyframes spin-ring {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Listening State */
+        .orb-wrapper.listening .orb-core {
+            transform: scale(1.1);
+            box-shadow: 0 0 45px #00e5ff, 0 0 15px #ffffff;
+            animation: orb-pulse 1s infinite alternate ease-in-out;
+        }
+        .orb-wrapper.listening .orb-ring-outer {
+            border-color: #00e5ff;
+            animation: spin-ring 3s linear infinite;
+        }
+
+        /* Processing State */
+        .orb-wrapper.processing .orb-core {
+            box-shadow: 0 0 35px #38bdf8;
+            filter: hue-rotate(90deg);
+        }
+        .orb-wrapper.processing .orb-ring-outer {
+            border-style: dotted;
+            animation: spin-ring 1.5s linear infinite;
+        }
+
+        /* Speaking State */
+        .orb-wrapper.speaking .orb-core {
+            box-shadow: 0 0 45px #00f5d4, 0 0 20px #0284c7;
+            animation: orb-speak 0.6s infinite alternate ease-in-out;
+        }
+
+        /* Error State */
+        .orb-wrapper.error .orb-core {
+            background: radial-gradient(circle at 35% 35%, #ef4444 0%, #991b1b 60%, #030712 100%);
+            box-shadow: 0 0 30px #ef4444;
+        }
+
+        @keyframes orb-pulse {
+            from { transform: scale(1.05); }
+            to { transform: scale(1.2); }
+        }
+
+        @keyframes orb-speak {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.18); }
+        }
+
+        .orb-status-text {
+            margin-top: 14px;
+            font-size: 0.88rem;
+            color: var(--text-sub);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stop-speech-btn {
+            margin-top: 8px;
+            display: none;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--error-red);
+            color: #fca5a5;
+            padding: 4px 12px;
+            border-radius: 14px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Chat Stream Area */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-bottom: 20px;
+        }
+
+        .msg-bubble {
+            max-width: 88%;
+            padding: 12px 14px;
+            border-radius: 16px;
+            font-size: 0.94rem;
+            line-height: 1.5;
+            position: relative;
+            word-wrap: break-word;
+            animation: fadeInMsg 0.25s ease-out forwards;
+        }
+
+        @keyframes fadeInMsg {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            background: var(--user-bubble);
+            border: 1px solid var(--surface-border);
+            color: #ffffff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .msg-ai {
+            align-self: flex-start;
+            background: var(--ai-bubble);
+            border: 1px solid var(--surface-border);
+            color: var(--text-main);
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .msg-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .msg-act-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+
+        .msg-act-btn:hover {
+            color: var(--cyan-glow);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Code Block Styling */
+        pre {
+            background: #090d16;
+            border: 1px solid var(--surface-border);
+            padding: 10px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 8px 0;
+            font-family: monospace;
+            font-size: 0.85rem;
+            position: relative;
+        }
+
+        pre code {
+            color: #38bdf8;
+        }
+
+        .copy-code-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+
+        /* Typing Dots */
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+            align-items: center;
+            padding: 4px 8px;
+        }
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--cyan-glow);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Bottom Fixed Input Bar */
+        .bottom-dock {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px 14px;
+            background: var(--surface-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid var(--surface-border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 90;
+        }
+
+        .input-box {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--surface-border);
+            border-radius: 22px;
+            padding: 10px 16px;
+            color: var(--text-main);
+            font-size: 0.94rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        body.light-theme .input-box {
+            background: #f1f5f9;
+        }
+
+        .input-box:focus {
+            border-color: var(--cyan-glow);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, var(--cyan-glow), var(--cyan-deep));
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.35);
+        }
+
+        .send-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* Sidebar History Drawer */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(4px);
+            z-index: 150;
+            display: none;
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: -290px;
+            width: 280px;
+            background: var(--bg-base);
+            border-right: 1px solid var(--surface-border);
+            z-index: 160;
+            display: flex;
+            flex-direction: column;
+            transition: left 0.3s ease;
+            padding: 16px;
+        }
+
+        .drawer.open {
+            left: 0;
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--surface-border);
+            margin-bottom: 12px;
+        }
+
+        .new-chat-btn {
+            background: linear-gradient(135deg, var(--cyan-glow), var(--cyan-deep));
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            margin-bottom: 14px;
+        }
+
+        .history-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .history-item {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .history-item.active {
+            border-color: var(--cyan-glow);
+            background: rgba(0, 229, 255, 0.08);
+        }
+
+        .history-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 190px;
+        }
+
+        .del-chat-btn {
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            cursor: pointer;
+            padding: 2px 4px;
+        }
+
+        /* Modal Overlay */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 16px;
+        }
+
+        .modal-card {
+            background: var(--bg-base);
+            border: 1px solid var(--surface-border);
+            width: 100%;
+            max-width: 360px;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            margin-bottom: 14px;
+            font-weight: 700;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            font-size: 0.9rem;
+        }
+
+        .select-input {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--surface-border);
+            color: var(--text-main);
+            padding: 6px 10px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        /* Non-intrusive Ad Zone */
+        .ad-container {
+            margin: 8px auto;
+            text-align: center;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <div class="logo">jonva AI</div>
-    <div class="top-icons">
-      <div class="icon-btn" id="muteBtn" onclick="toggleMute()" title="Mute/Unmute">🔊</div>
-      <div class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Theme Badlein">🌙</div>
-      <div class="icon-btn" id="menuBtn" onclick="toggleMenu()" title="Menu">🔲</div>
-      <div class="icon-btn" id="userBtn" onclick="openProfileOrLogin()" title="Account">👤</div>
-    </div>
-  </header>
-
-  <!-- Quick Menu -->
-  <div class="menu-popup" id="menuPopup">
-    <div class="menu-item" onclick="clearChat()">🗑️ Chat Saaf Karein</div>
-    <div class="menu-item" onclick="alert('jonva AI Engine: Groq High-Speed (Active)')">⚡ Engine: Groq AI</div>
-    <div class="menu-item" onclick="alert('jonva AI Voice: Edge Neural HD')">🎙️ Voice: Neural HD</div>
-  </div>
-
-  <div class="main-stage">
-    <div class="status-badge" id="statusBadge">सिस्टम ऑनलाइन | रेडी</div>
-    
-    <div class="orb-container" id="orbBtn" onclick="startVoiceInput()">
-      <div class="orb-ring-outer"></div>
-      <div class="orb-ring-inner"></div>
-      <div class="orb-core"></div>
-      <svg class="mic-svg" viewBox="0 0 24 24">
-        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-      </svg>
-    </div>
-
-    <div class="sub-card">
-      <div class="user-line" id="userQuery">सर: "..."</div>
-      <div class="ai-line" id="aiReply">jonva AI तैयार है, पूछिए सर।</div>
-    </div>
-  </div>
-
-  <div class="bottom-dock">
-    <div class="bar-pill">
-      <input type="text" id="textInput" placeholder="कमांड दें या कुछ भी पूछें..." onkeypress="if(event.key==='Enter') sendPrompt()">
-      <button class="send-circle" onclick="sendPrompt()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-        </svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- Login Modal -->
-  <div class="overlay" id="authModal">
-    <div class="dialog">
-      <h3 id="authTitle">jonva AI में लॉगिन</h3>
-      <div id="authErr" style="color:#ef4444; font-size:13px; margin-bottom:10px; display:none;"></div>
-      
-      <input type="text" id="authName" placeholder="पूरा नाम" style="display:none;">
-      <input type="email" id="authEmail" placeholder="ईमेल आईडी">
-      <input type="password" id="authPassword" placeholder="पासवर्ड">
-      
-      <button class="action-btn" onclick="submitAuth()">आगे बढ़ें</button>
-      
-      <!-- Official Google Sign In Button Container -->
-      <div class="google-btn-box">
-        <div id="g_id_onload"
-             data-client_id="21441464926-phib84akp4ro376dch70c78mjumghcoi.apps.googleusercontent.com"
-             data-callback="handleGoogleLogin"
-             data-auto_prompt="false">
+    <!-- Header Navigation -->
+    <header>
+        <div class="header-left">
+            <button class="icon-btn" id="drawerOpenBtn" title="चैट हिस्ट्री">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <div class="brand-logo">
+                <div class="status-dot"></div>
+                <span class="brand-badge">JONVA AI</span>
+            </div>
         </div>
-        <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
-      </div>
+        <div class="header-right">
+            <button class="icon-btn" id="themeToggleBtn" title="थीम बदलें">
+                <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
+            </button>
+            <button class="icon-btn" id="settingsBtn" title="सेटिंग्स और लॉगिन">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </button>
+        </div>
+    </header>
 
-      <div style="text-align:center; margin-top:14px; font-size:13px; color:var(--text-sub);">
-        <span id="authToggleMsg">खाता नहीं है? </span>
-        <a href="javascript:void(0)" onclick="toggleAuthMode()" id="authToggleLink" style="color:var(--accent-glow); text-decoration:none;">साइन-अप करें</a>
-      </div>
-      <div style="text-align:center; margin-top:10px;">
-        <a href="javascript:void(0)" onclick="closeModal('authModal')" style="color:var(--text-sub); font-size:12px;">रद्द करें</a>
-      </div>
+    <!-- Main Content -->
+    <main>
+        <!-- Luminous 3D AI Voice Orb -->
+        <section class="orb-hero">
+            <div class="orb-wrapper" id="orbBtn" title="बोलने के लिए टैप करें">
+                <div class="orb-ring-outer"></div>
+                <div class="orb-glow"></div>
+                <div class="orb-core">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="orb-status-text" id="orbStatusText">टैप करके बोलें</div>
+            <button class="stop-speech-btn" id="stopSpeechBtn">⏹ आवाज़ रोकें (Stop)</button>
+        </section>
+
+        <!-- Safe Native Ad Banner Zone (Non-obstructive) -->
+        <div class="ad-container" id="adSlot"></div>
+
+        <!-- Chat Stream Stream Area -->
+        <section class="chat-container" id="chatContainer">
+            <div class="msg-bubble msg-ai">
+                नमस्ते! मैं <b>JONVA AI</b> हूँ। आप बोलकर या टाइप करके कुछ भी पूछ सकते हैं।
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Input Dock -->
+    <div class="bottom-dock">
+        <input type="text" class="input-box" id="messageInput" placeholder="JONVA से पूछें..." autocomplete="off">
+        <button class="send-btn" id="sendBtn" title="भेजें">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
     </div>
-  </div>
 
-  <!-- Profile Modal -->
-  <div class="overlay" id="profileModal">
-    <div class="dialog">
-      <h3>आपकी प्रोफ़ाइल</h3>
-      <p id="profName" style="font-weight:600; font-size:16px; margin-bottom:4px;"></p>
-      <p id="profEmail" style="color:var(--text-sub); font-size:14px; margin-bottom:12px;"></p>
-      <div id="adminBadge" style="display:none; background:rgba(234, 179, 8, 0.15); color:#facc15; border:1px solid #eab308; padding:5px; border-radius:6px; font-size:12px; margin-bottom:14px; text-align:center;">👑 सिस्टम एडमिनिस्ट्रेटर</div>
-      
-      <button class="action-btn" style="background:#dc2626;" onclick="logoutUser()">लॉगआउट करें</button>
-      <div style="text-align:center; margin-top:14px;">
-        <a href="javascript:void(0)" onclick="closeModal('profileModal')" style="color:var(--text-sub); font-size:12px;">बंद करें</a>
-      </div>
+    <!-- History Sidebar Drawer -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <h3>चैट हिस्ट्री</h3>
+            <button class="icon-btn" id="drawerCloseBtn">&times;</button>
+        </div>
+        <button class="new-chat-btn" id="newChatBtn">+ नई चैट शुरू करें</button>
+        <div class="history-list" id="historyList"></div>
     </div>
-  </div>
 
-  <script>
-    let isSignUp = false;
-    let currentUser = null;
-    let isMuted = false;
-    let currentAudio = null;
-    let typeWriterTimer = null;
+    <!-- Settings & Auth Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-card">
+            <div class="modal-title">सेटिंग्स और अकाउंट</div>
+            
+            <div class="setting-row">
+                <span>वॉयस भाषा</span>
+                <select class="select-input" id="voiceLangSelect">
+                    <option value="hi-IN">हिंदी (Hindi)</option>
+                    <option value="en-IN">English (India)</option>
+                    <option value="en-US">English (US)</option>
+                </select>
+            </div>
 
-    // 1. Theme Toggle (Dark / Light)
-    function toggleTheme() {
-      document.body.classList.toggle('light-theme');
-      const isLight = document.body.classList.contains('light-theme');
-      document.getElementById('themeBtn').innerText = isLight ? '☀️' : '🌙';
-      localStorage.setItem('jonva_theme', isLight ? 'light' : 'dark');
-    }
+            <div class="setting-row">
+                <span>अकाउंट लॉगिन</span>
+                <div id="googleSignInContainer">
+                    <div id="g_id_onload" data-auto_prompt="false"></div>
+                    <div class="g_id_signin" data-type="standard" data-size="medium" data-theme="filled_blue"></div>
+                </div>
+            </div>
 
-    if (localStorage.getItem('jonva_theme') === 'light') {
-      document.body.classList.add('light-theme');
-      document.getElementById('themeBtn').innerText = '☀️';
-    }
+            <div style="margin-top: 18px; text-align: right;">
+                <button class="icon-btn" style="width: auto; padding: 6px 14px; border-radius: 8px;" id="modalCloseBtn">बंद करें</button>
+            </div>
+        </div>
+    </div>
 
-    // 2. Mute Toggle
-    function toggleMute() {
-      isMuted = !isMuted;
-      document.getElementById('muteBtn').innerText = isMuted ? '🔇' : '🔊';
-      if (isMuted && currentAudio) {
-        currentAudio.pause();
-      }
-      document.getElementById('statusBadge').innerText = isMuted ? "आवाज़ म्यूट है" : "सिस्टम ऑनलाइन | रेडी";
-    }
+    <script>
+        /* --- STATE MANAGEMENT --- */
+        let isListening = false;
+        let isProcessing = false;
+        let currentAudio = null;
+        let recognition = null;
+        let activeChatId = null;
+        let chatSessions = {};
 
-    // 3. Quick Menu
-    function toggleMenu() {
-      const m = document.getElementById('menuPopup');
-      m.style.display = (m.style.display === 'block') ? 'none' : 'block';
-    }
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('#menuBtn') && !e.target.closest('#menuPopup')) {
-        document.getElementById('menuPopup').style.display = 'none';
-      }
-    });
-
-    function clearChat() {
-      document.getElementById('userQuery').innerText = 'सर: "..."';
-      document.getElementById('aiReply').innerText = 'चैट साफ़ कर दी गई है।';
-      toggleMenu();
-    }
-
-    // 4. Live Typewriter Effect Function
-    function typeWrite(text, element, speed = 25) {
-      if (typeWriterTimer) clearInterval(typeWriterTimer);
-      element.innerText = '';
-      let i = 0;
-      typeWriterTimer = setInterval(() => {
-        if (i < text.length) {
-          element.innerText += text.charAt(i);
-          i++;
-        } else {
-          clearInterval(typeWriterTimer);
+        // Load History from localStorage
+        try {
+            chatSessions = JSON.parse(localStorage.getItem('jonva_chats') || '{}');
+        } catch (e) {
+            chatSessions = {};
         }
-      }, speed);
-    }
 
-    // 5. Chat & Voice Workflow
-    async function askJonva(prompt) {
-      document.getElementById('userQuery').innerText = `सर: "${prompt}"`;
-      
-      // Thinking Animation Trigger
-      const orb = document.getElementById('orbBtn');
-      orb.classList.remove('speaking');
-      orb.classList.add('thinking');
-      document.getElementById('statusBadge').innerText = "jonva AI विचार कर रहा है...";
-      document.getElementById('aiReply').innerHTML = `
-        <span class="thinking-anim">
-          <span class="thinking-dot"></span>
-          <span class="thinking-dot"></span>
-          <span class="thinking-dot"></span>
-          jonva AI विचार कर रहा है...
-        </span>
-      `;
+        const orbBtn = document.getElementById('orbBtn');
+        const orbStatusText = document.getElementById('orbStatusText');
+        const stopSpeechBtn = document.getElementById('stopSpeechBtn');
+        const chatContainer = document.getElementById('chatContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const voiceLangSelect = document.getElementById('voiceLangSelect');
 
-      try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt })
-        });
-        const data = await res.json();
-        const reply = data.reply || "उत्तर नहीं मिल पाया";
-        
-        orb.classList.remove('thinking');
-        
-        // Typewriter animation begins
-        typeWrite(reply, document.getElementById('aiReply'), 22);
-
-        // Speak audio if not muted
-        if (!isMuted) {
-          playAudioTTS(reply);
-        } else {
-          document.getElementById('statusBadge').innerText = "सिस्टम ऑनलाइन | रेडी";
+        /* --- THEME TOGGLE --- */
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        if (localStorage.getItem('jonva_theme') === 'light') {
+            document.body.classList.add('light-theme');
         }
-      } catch (e) {
-        orb.classList.remove('thinking');
-        document.getElementById('aiReply').innerText = "सर्वर से संपर्क टूट गया।";
-        document.getElementById('statusBadge').innerText = "सिस्टम ऑनलाइन | रेडी";
-      }
-    }
-
-    async function playAudioTTS(text) {
-      try {
-        const orb = document.getElementById('orbBtn');
-        orb.classList.add('speaking');
-        document.getElementById('statusBadge').innerText = "jonva AI बोल रहा है... (रुकने के लिए टैप करें)";
-        
-        const res = await fetch('/api/tts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text })
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            localStorage.setItem('jonva_theme', isLight ? 'light' : 'dark');
         });
-        const blob = await res.blob();
-        if (currentAudio) currentAudio.pause();
-        currentAudio = new Audio(URL.createObjectURL(blob));
-        currentAudio.onended = () => {
-          orb.classList.remove('speaking');
-          document.getElementById('statusBadge').innerText = "सिस्टम ऑनलाइन | रेडी";
+
+        /* --- DRAWER CONTROLS --- */
+        const drawer = document.getElementById('drawer');
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        document.getElementById('drawerOpenBtn').onclick = () => {
+            renderHistoryList();
+            drawer.classList.add('open');
+            drawerOverlay.style.display = 'block';
         };
-        currentAudio.play();
-      } catch (e) {
-        document.getElementById('orbBtn').classList.remove('speaking');
-        document.getElementById('statusBadge').innerText = "सिस्टम ऑनलाइन | रेडी";
-      }
-    }
+        const closeDrawer = () => {
+            drawer.classList.remove('open');
+            drawerOverlay.style.display = 'none';
+        };
+        document.getElementById('drawerCloseBtn').onclick = closeDrawer;
+        drawerOverlay.onclick = closeDrawer;
 
-    function sendPrompt() {
-      const input = document.getElementById('textInput');
-      const val = input.value.trim();
-      if (!val) return;
-      input.value = '';
-      askJonva(val);
-    }
+        /* --- SETTINGS MODAL --- */
+        const settingsModal = document.getElementById('settingsModal');
+        document.getElementById('settingsBtn').onclick = () => settingsModal.style.display = 'flex';
+        document.getElementById('modalCloseBtn').onclick = () => settingsModal.style.display = 'none';
 
-    function startVoiceInput() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        alert("कृपया नीचे दिए गए बॉक्स में टाइप करें।");
-        return;
-      }
-      const rec = new SpeechRecognition();
-      rec.lang = 'hi-IN';
-      document.getElementById('statusBadge').innerText = "सुन रहा हूँ...";
-      rec.onresult = (e) => {
-        const text = e.results[0][0].transcript;
-        askJonva(text);
-      };
-      rec.onerror = () => {
-        document.getElementById('statusBadge').innerText = "सिस्टम ऑनलाइन | रेडी";
-      };
-      rec.start();
-    }
-
-    // 6. User Auth
-    async function checkLogin() {
-      try {
-        const res = await fetch('/api/auth/me');
-        const data = await res.json();
-        currentUser = data.user;
-        updateUserUI();
-      } catch (e) {}
-    }
-
-    function updateUserUI() {
-      const btn = document.getElementById('userBtn');
-      if (currentUser) {
-        btn.style.borderColor = 'var(--accent-glow)';
-        btn.style.color = 'var(--accent-glow)';
-      } else {
-        btn.style.borderColor = 'rgba(255,255,255,0.15)';
-        btn.style.color = 'var(--text-sub)';
-      }
-    }
-
-    function openProfileOrLogin() {
-      if (currentUser) {
-        document.getElementById('profName').innerText = currentUser.name;
-        document.getElementById('profEmail').innerText = currentUser.email;
-        document.getElementById('adminBadge').style.display = (currentUser.role === 'admin') ? 'block' : 'none';
-        document.getElementById('profileModal').style.display = 'flex';
-      } else {
-        document.getElementById('authModal').style.display = 'flex';
-      }
-    }
-
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-    function toggleAuthMode() {
-      isSignUp = !isSignUp;
-      document.getElementById('authTitle').innerText = isSignUp ? "jonva AI में नया खाता" : "jonva AI में लॉगिन";
-      document.getElementById('authName').style.display = isSignUp ? "block" : "none";
-      document.getElementById('authToggleMsg').innerText = isSignUp ? "पहले से खाता है? " : "खाता नहीं है? ";
-      document.getElementById('authToggleLink').innerText = isSignUp ? "लॉगिन करें" : "साइन-अप करें";
-    }
-
-    async function submitAuth() {
-      const email = document.getElementById('authEmail').value.trim();
-      const password = document.getElementById('authPassword').value;
-      const name = document.getElementById('authName').value.trim();
-      const errBox = document.getElementById('authErr');
-      errBox.style.display = 'none';
-
-      const url = isSignUp ? '/api/auth/signup' : '/api/auth/login';
-      const body = isSignUp ? { name, email, password } : { email, password };
-
-      try {
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        });
-        const data = await res.json();
-        if (res.ok) {
-          currentUser = data.user;
-          updateUserUI();
-          closeModal('authModal');
-          alert("स्वागत है!");
-        } else {
-          errBox.innerText = data.error || "त्रुटि!";
-          errBox.style.display = 'block';
+        /* --- ORB STATE UPDATES --- */
+        function setOrbState(state, text) {
+            orbBtn.className = 'orb-wrapper ' + state;
+            orbStatusText.innerText = text;
+            if (state === 'speaking') {
+                stopSpeechBtn.style.display = 'inline-block';
+            } else {
+                stopSpeechBtn.style.display = 'none';
+            }
         }
-      } catch (e) {
-        errBox.innerText = "सर्वर से संपर्क नहीं हुआ";
-        errBox.style.display = 'block';
-      }
-    }
 
-    function handleGoogleLogin(response) {
-  // Google JWT टोकन डिकोड करें
-  const base64Url = response.credential.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const payload = JSON.parse(decodeURIComponent(escape(window.atob(base64))));
+        stopSpeechBtn.onclick = () => {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            setOrbState('idle', 'टैप करके बोलें');
+        };
 
-  fetch('/api/auth/google', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      email: payload.email,
-      name: payload.name,
-      sub: payload.sub
-    })
-  }).then(r => r.json()).then(data => { {
-      currentUser = data.user;
-      updateUserUI();
-      closeModal('authModal');
-      alert("Google लॉगिन सफल! स्वागत है " + data.user.name);
-    }
-  }).catch(e => alert("लॉगिन में त्रुटि हुई"));
-}
+        /* --- SPEECH RECOGNITION (Voice Assistant 2.0) --- */
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRec) {
+            recognition = new SpeechRec();
+            recognition.continuous = false;
+            recognition.interimResults = false;
 
-    async function logoutUser() {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      currentUser = null;
-      updateUserUI();
-      closeModal('profileModal');
-    }
+            recognition.onstart = () => {
+                isListening = true;
+                setOrbState('listening', 'सुन रहा हूँ... बोलिए');
+            };
 
-    checkLogin();
-  </script>
+            recognition.onresult = (e) => {
+                const speechText = e.results[0][0].transcript;
+                if (speechText) {
+                    handleUserQuery(speechText);
+                }
+            };
+
+            recognition.onerror = (e) => {
+                isListening = false;
+                setOrbState('error', 'माइक एरर: ' + (e.error === 'not-allowed' ? 'परमिशन दें' : 'दोबारा प्रयास करें'));
+                setTimeout(() => setOrbState('idle', 'टैप करके बोलें'), 3000);
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                if (!isProcessing) {
+                    setOrbState('idle', 'टैप करके बोलें');
+                }
+            };
+        }
+
+        orbBtn.addEventListener('click', () => {
+            if (isProcessing) return; // Debounce
+            if (currentAudio && !currentAudio.paused) {
+                currentAudio.pause();
+            }
+
+            if (!SpeechRec) {
+                alert('आपके ब्राउज़र में वॉयस इनपुट सपोर्ट नहीं है। कृपया Chrome इस्तेमाल करें।');
+                return;
+            }
+
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.lang = voiceLangSelect.value;
+                try {
+                    recognition.start();
+                } catch (err) {
+                    recognition.stop();
+                }
+            }
+        });
+
+        /* --- CHAT ENGINE & PARSER --- */
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function formatMarkdown(text) {
+            let escaped = escapeHtml(text);
+            // Code blocks
+            escaped = escaped.replace(/```([\s\S]*?)```/g, (match, code) => {
+                return `<pre><button class="copy-code-btn" onclick="copyCode(this)">Copy</button><code>${code.trim()}</code></pre>`;
+            });
+            // Bold
+            escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            return escaped.replace(/\n/g, '<br>');
+        }
+
+        function appendMessage(sender, text) {
+            const bubble = document.createElement('div');
+            bubble.className = `msg-bubble msg-${sender}`;
+
+            if (sender === 'ai') {
+                bubble.innerHTML = formatMarkdown(text) + `
+                    <div class="msg-actions">
+                        <button class="msg-act-btn" onclick="copyText('${encodeURIComponent(text)}')">📋 कॉपी</button>
+                        <button class="msg-act-btn" onclick="speakText('${encodeURIComponent(text)}')">🔊 सुनें</button>
+                    </div>
+                `;
+            } else {
+                bubble.innerText = text;
+            }
+
+            chatContainer.appendChild(bubble);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            return bubble;
+        }
+
+        window.copyCode = (btn) => {
+            const code = btn.nextElementSibling.innerText;
+            navigator.clipboard.writeText(code);
+            btn.innerText = 'Copied!';
+            setTimeout(() => btn.innerText = 'Copy', 1500);
+        };
+
+        window.copyText = (encoded) => {
+            navigator.clipboard.writeText(decodeURIComponent(encoded));
+            alert('मैसेज कॉपी हो गया!');
+        };
+
+        window.speakText = (encoded) => {
+            playTTS(decodeURIComponent(encoded));
+        };
+
+        /* --- TTS AUDIO PLAYBACK --- */
+        async function playTTS(text) {
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+            setOrbState('speaking', 'बोल रहा हूँ...');
+
+            try {
+                const res = await fetch('/tts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: text, voice: voiceLangSelect.value === 'hi-IN' ? 'hi-IN-SwaraNeural' : 'en-IN-NeerjaNeural' })
+                });
+
+                if (!res.ok) throw new Error('Audio generation failed');
+
+                const blob = await res.blob();
+                const audioUrl = URL.createObjectURL(blob);
+                currentAudio = new Audio(audioUrl);
+                currentAudio.onended = () => setOrbState('idle', 'टैप करके बोलें');
+                currentAudio.onerror = () => setOrbState('idle', 'टैप करके बोलें');
+                currentAudio.play();
+            } catch (e) {
+                setOrbState('idle', 'टैप करके बोलें');
+            }
+        }
+
+        /* --- USER QUERY HANDLER --- */
+        async function handleUserQuery(msg) {
+            if (!msg.trim() || isProcessing) return;
+
+            appendMessage('user', msg);
+            messageInput.value = '';
+            isProcessing = true;
+            setOrbState('processing', 'प्रोसेस कर रहा हूँ...');
+
+            // Typing Indicator
+            const typingBubble = document.createElement('div');
+            typingBubble.className = 'msg-bubble msg-ai';
+            typingBubble.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+            chatContainer.appendChild(typingBubble);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            try {
+                const res = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: msg })
+                });
+
+                chatContainer.removeChild(typingBubble);
+
+                if (!res.ok) {
+                    const errData = await res.json().catch(() => ({}));
+                    throw new Error(errData.error || 'सर्वर से जवाब नहीं मिला');
+                }
+
+                const data = await res.json();
+                const aiReply = data.reply || data.response || 'कोई जवाब नहीं मिला।';
+                appendMessage('ai', aiReply);
+
+                // Save to History
+                saveCurrentChat(msg, aiReply);
+
+                // Auto speak
+                playTTS(aiReply);
+
+            } catch (err) {
+                if (typingBubble.parentNode) chatContainer.removeChild(typingBubble);
+                appendMessage('ai', `⚠️ एरर: ${err.message}`);
+                setOrbState('error', 'एरर आया');
+                setTimeout(() => setOrbState('idle', 'टैप करके बोलें'), 3000);
+            } finally {
+                isProcessing = false;
+            }
+        }
+
+        sendBtn.addEventListener('click', () => handleUserQuery(messageInput.value));
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handleUserQuery(messageInput.value);
+        });
+
+        /* --- PERSISTENT CHAT HISTORY --- */
+        function saveCurrentChat(userMsg, aiMsg) {
+            if (!activeChatId) {
+                activeChatId = 'chat_' + Date.now();
+                chatSessions[activeChatId] = {
+                    id: activeChatId,
+                    title: userMsg.substring(0, 24) + (userMsg.length > 24 ? '...' : ''),
+                    messages: []
+                };
+            }
+            chatSessions[activeChatId].messages.push({ sender: 'user', text: userMsg });
+            chatSessions[activeChatId].messages.push({ sender: 'ai', text: aiMsg });
+            localStorage.setItem('jonva_chats', JSON.stringify(chatSessions));
+        }
+
+        function renderHistoryList() {
+            const list = document.getElementById('historyList');
+            list.innerHTML = '';
+            const ids = Object.keys(chatSessions).reverse();
+            if (ids.length === 0) {
+                list.innerHTML = '<div style="color:var(--text-sub); font-size:0.85rem; padding:10px;">कोई पुरानी बातचीत नहीं है।</div>';
+                return;
+            }
+
+            ids.forEach(id => {
+                const item = document.createElement('div');
+                item.className = 'history-item ' + (id === activeChatId ? 'active' : '');
+                item.innerHTML = `
+                    <span class="history-title" onclick="loadChat('${id}')">${escapeHtml(chatSessions[id].title)}</span>
+                    <button class="del-chat-btn" onclick="deleteChat('${id}', event)">🗑</button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        window.loadChat = (id) => {
+            activeChatId = id;
+            chatContainer.innerHTML = '';
+            chatSessions[id].messages.forEach(m => appendMessage(m.sender, m.text));
+            closeDrawer();
+        };
+
+        window.deleteChat = (id, e) => {
+            e.stopPropagation();
+            if (confirm('क्या आप यह चैट हटाना चाहते हैं?')) {
+                delete chatSessions[id];
+                localStorage.setItem('jonva_chats', JSON.stringify(chatSessions));
+                if (activeChatId === id) {
+                    activeChatId = null;
+                    chatContainer.innerHTML = '<div class="msg-bubble msg-ai">नमस्ते! नई बातचीत शुरू करें।</div>';
+                }
+                renderHistoryList();
+            }
+        };
+
+        document.getElementById('newChatBtn').onclick = () => {
+            activeChatId = null;
+            chatContainer.innerHTML = '<div class="msg-bubble msg-ai">नमस्ते! मैं <b>JONVA AI</b> हूँ। कुछ नया पूछिए।</div>';
+            closeDrawer();
+        };
+    </script>
 </body>
 </html>
