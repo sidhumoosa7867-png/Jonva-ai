@@ -10,13 +10,10 @@ import edge_tts
 app = Flask(__name__, static_folder='.', static_url_path='')
 
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-# Active production models in order of priority
 CANDIDATE_MODELS = [
     "llama-3.3-70b-versatile",
     "llama3-8b-8192",
-    "llama-3.1-8b-instant",
-    "mixtral-8x7b-32768",
-    "gemma2-9b-it"
+    "mixtral-8x7b-32768"
 ]
 active_model = CANDIDATE_MODELS[0]
 
@@ -36,7 +33,18 @@ def cleanup_old_audio():
 def home():
     return send_from_directory(".", "index.html")
 
-# Real AI Image Generator (Flux Engine)
+def optimize_image_prompt(raw_prompt):
+    # Auto-add detail boosters so faces and textures render sharply
+    clean = raw_prompt.strip()
+    for filler in ["generate an image of", "generate image of", "photo banao", "image banao", "photo of", "image of", "tasveer banao"]:
+        clean = clean.replace(filler, "")
+    clean = clean.strip() or raw_prompt
+    
+    # Detail booster for clean, photorealistic faces
+    boosted = f"{clean}, highly detailed, sharp facial features, flawless face, 8k resolution, photorealistic, cinematic lighting, ultra high definition"
+    return boosted
+
+# Real AI Image Generator (Flux + Enhanced Face Rendering)
 @app.route("/generate-image", methods=["POST"])
 @app.route("/api/generate-image", methods=["POST"])
 def generate_image():
@@ -48,9 +56,11 @@ def generate_image():
     if not prompt:
         return jsonify({"error": "Prompt cannot be empty"}), 400
 
-    encoded_prompt = urllib.parse.quote(prompt)
+    optimized = optimize_image_prompt(prompt)
+    encoded_prompt = urllib.parse.quote(optimized)
     seed = int(time.time() * 1000) % 999999
-    image_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&model=flux&nologo=true&seed={seed}"
+    # enhance=true ensures the AI engine expands facial details and quality
+    image_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&model=flux&enhance=true&nologo=true&seed={seed}"
     
     return jsonify({
         "status": "success",
@@ -72,19 +82,22 @@ def chat():
     if not user_message:
         return jsonify({"error": "Message cannot be empty."}), 400
 
-    # Auto Image Generator trigger
     lower_msg = user_message.lower()
-    img_triggers = ["generate image", "image of", "photo of", "picture of", "photo banao", "image banao", "tasveer"]
-    if any(trigger in lower_msg for trigger in img_triggers):
-        clean_prompt = user_message
-        for t in ["generate an image of", "generate image of", "create an image of", "photo banao", "image banao"]:
-            clean_prompt = clean_prompt.replace(t, "")
-        clean_prompt = clean_prompt.strip() or user_message
-        encoded_prompt = urllib.parse.quote(clean_prompt)
+    img_keywords = [
+        "image", "photo", "pic", "picture", "banao", "tasveer",
+        "draw", "generate", "superman", "batman", "avatar", "wallpaper"
+    ]
+    # Check if user is asking for image creation
+    is_image_intent = any(k in lower_msg for k in ["photo", "image", "pic", "tasveer", "draw"]) or \
+                      ("banao" in lower_msg and not any(q in lower_msg for q in ["code", "script", "plan"]))
+
+    if is_image_intent:
+        optimized = optimize_image_prompt(user_message)
+        encoded_prompt = urllib.parse.quote(optimized)
         seed = int(time.time() * 1000) % 999999
-        img_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&model=flux&nologo=true&seed={seed}"
+        img_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&model=flux&enhance=true&nologo=true&seed={seed}"
         return jsonify({
-            "reply": f"Maine aapki request par HD image create kar di hai: '{clean_prompt}'",
+            "reply": f"Maine aapke liye sharp aur HD photo taiyar kar di hai!",
             "image_url": img_url,
             "status": "success"
         })
@@ -94,9 +107,10 @@ def chat():
         return jsonify({"error": "Groq API Key is missing in Render environment."}), 500
 
     system_prompt = (
-        "You are JONVA AI, a polite, intelligent, and highly capable AI assistant created by Gulfam. "
-        "You help users with AI tools, video editing, coding, creative ideas, and everyday answers. "
-        "Communicate naturally in Hindi, English, or Hinglish with clean formatting and friendly emojis."
+        "Aap JONVA AI hain, ek bahut hi smart, friendly aur helpful AI assistant jise Gulfam ne banaya hai. "
+        "User ke sath hamesha seedhi, aasan aur natural Hindi/Hinglish me baat karein, jaise ek sachhe dost aur intelligent saathi se karte hain. "
+        "Agar user 'hello' ya 'kaise ho' pooche, to natural dhang se jawab dein (jaise: 'Badhiya bhai! Aap batao, aaj kya help karu ya kya create karna hai?'). "
+        "Lamba bekar bhashan na dein, hamesha point-to-point aur helpful banein."
     )
 
     headers = {
@@ -104,7 +118,6 @@ def chat():
         "Content-Type": "application/json"
     }
 
-    # Model Fallback Mechanism (Tries models until success)
     models_to_test = [active_model] + [m for m in CANDIDATE_MODELS if m != active_model]
     last_error = ""
 
