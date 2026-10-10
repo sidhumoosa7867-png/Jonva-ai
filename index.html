@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>JONVA AI — Your Smart AI Assistant</title>
     
-    <!-- Monetag Ads Integration -->
+    <!-- Monetag Ads Integration (Preserved) -->
     <meta name="monetag" content="613fff50ec71829d78acf2e8b284c370">
     <script src="https://quqe5.com/88/tag.min.js" data-zone="293279" async data-cfasync="false"></script>
     
-    <!-- Google Identity Services SDK -->
+    <!-- Official Google Identity Services SDK -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <style>
@@ -80,6 +80,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
         }
 
         .avatar-img {
@@ -526,7 +527,7 @@
             100% { height: 32px; background: #06b6d4; }
         }
 
-        /* Settings */
+        /* Settings & Profile Cards */
         .settings-card {
             background: var(--bg-card);
             border: 1px solid var(--border-glass);
@@ -581,6 +582,28 @@
         .color-dot.active {
             border-color: #ffffff;
             transform: scale(1.15);
+        }
+
+        .user-profile-badge {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            font-weight: 600;
         }
 
         /* Bottom Nav */
@@ -665,11 +688,11 @@
 
     <!-- Top Bar -->
     <header class="top-bar">
-        <div class="user-greeting-box">
+        <div class="user-greeting-box" onclick="switchNav('settings')">
             <div class="avatar-img" id="userAvatar">G</div>
             <div>
                 <div class="greeting-title" id="greetingHeader">Hello, Gulfam 🌟</div>
-                <div class="greeting-sub">Your ideas, our AI power 🚀</div>
+                <div class="greeting-sub" id="greetingEmail">Your ideas, our AI power 🚀</div>
             </div>
         </div>
         <div class="top-actions">
@@ -845,6 +868,46 @@
     <!-- VIEW 5: SETTINGS & GOOGLE LOGIN -->
     <main class="app-view" id="viewSettings">
         <div class="settings-card">
+            <h4>Google Account & Sign In</h4>
+            
+            <div id="loggedInView" style="display:none;">
+                <div class="user-profile-badge">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div class="avatar-img" id="cardAvatar" style="width:44px; height:44px;">G</div>
+                        <div>
+                            <div style="font-weight:700; font-size:0.95rem;" id="cardUserName">MD Gulfam</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);" id="cardUserEmail">user@gmail.com</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="signOutUser()">Sign Out</button>
+                </div>
+            </div>
+
+            <div id="loggedOutView" style="text-align:center; padding:10px 0;">
+                <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:14px;">Sign in with your real Google account to sync profile & chats:</p>
+                
+                <!-- Hardcoded Static GSI Elements for Zero Missing Client_ID Errors -->
+                <div id="g_id_onload"
+                     data-client_id="21441464026-phib04akpfro376dch70o78njunghook.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-callback="handleGoogleLogin"
+                     data-auto_prompt="false">
+                </div>
+                <div style="display:flex; justify-content:center;">
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="pill"
+                         data-theme="filled_blue"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-card">
             <h4>Appearance</h4>
             <div class="theme-select-row">
                 <div class="theme-box-opt selected" id="optDark" onclick="setTheme('dark')">🌙 Dark</div>
@@ -858,16 +921,6 @@
                 <div class="color-dot" style="background:#06b6d4;" onclick="setAccent('#06b6d4', this)"></div>
                 <div class="color-dot" style="background:#ec4899;" onclick="setAccent('#ec4899', this)"></div>
             </div>
-        </div>
-
-        <div class="settings-card">
-            <h4>Google Sign-In & Account</h4>
-            <div id="accountInfoBox" style="font-size:0.86rem; margin-bottom:12px;">
-                User: <b id="displayUserName">Gulfam</b> (Free Plan)
-            </div>
-            
-            <!-- Guaranteed Client-ID Injected Google Button -->
-            <div id="googleButtonMount" style="display:flex; justify-content:center; min-height:45px;"></div>
         </div>
     </main>
 
@@ -890,7 +943,7 @@
             <span>Tools</span>
         </button>
         <button class="dock-tab" id="tabSettings" onclick="switchNav('settings')">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             <span>Profile</span>
         </button>
     </nav>
@@ -912,31 +965,7 @@
         const GOOGLE_CLIENT_ID = "21441464026-phib04akpfro376dch70o78njunghook.apps.googleusercontent.com";
         let currentAudio = null;
 
-        /* Google Sign-In Initializer (Solves Missing Client_ID) */
-        function renderGoogleButton() {
-            if (window.google && google.accounts && google.accounts.id) {
-                try {
-                    google.accounts.id.initialize({
-                        client_id: GOOGLE_CLIENT_ID,
-                        callback: handleGoogleLogin,
-                        auto_select: false
-                    });
-                    const mountPoint = document.getElementById("googleButtonMount");
-                    if (mountPoint) {
-                        mountPoint.innerHTML = '';
-                        google.accounts.id.renderButton(mountPoint, {
-                            type: "standard",
-                            theme: "filled_blue",
-                            size: "large",
-                            shape: "pill"
-                        });
-                    }
-                } catch (e) {
-                    console.error("GSI Init error:", e);
-                }
-            }
-        }
-
+        /* Real Google Sign-In Handler */
         window.handleGoogleLogin = function(response) {
             try {
                 const base64Url = response.credential.split('.')[1];
@@ -944,29 +973,53 @@
                 const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
                 const user = JSON.parse(jsonPayload);
                 
-                localStorage.setItem('jonva_user', JSON.stringify({
-                    name: user.name,
-                    email: user.email,
-                    picture: user.picture
-                }));
-                applyUserData(user);
+                const profile = {
+                    name: user.name || 'User',
+                    email: user.email || '',
+                    picture: user.picture || ''
+                };
+
+                localStorage.setItem('jonva_user', JSON.stringify(profile));
+                applyUserData(profile);
             } catch (e) {
-                console.error("Google parse error:", e);
+                console.error("Google sign in parse error:", e);
             }
         };
 
         function applyUserData(user) {
             if (!user) return;
-            const firstName = user.name ? user.name.split(' ')[0] : 'Gulfam';
+            const firstName = user.name.split(' ')[0];
             document.getElementById('greetingHeader').innerText = `Hello, ${firstName} 🌟`;
-            document.getElementById('displayUserName').innerText = user.name;
+            if (user.email) {
+                document.getElementById('greetingEmail').innerText = user.email;
+            }
+
             if (user.picture) {
                 document.getElementById('userAvatar').innerHTML = `<img src="${user.picture}" alt="user">`;
+                document.getElementById('cardAvatar').innerHTML = `<img src="${user.picture}" alt="user">`;
             } else {
                 document.getElementById('userAvatar').innerText = firstName[0];
+                document.getElementById('cardAvatar').innerText = firstName[0];
             }
+
+            document.getElementById('cardUserName').innerText = user.name;
+            document.getElementById('cardUserEmail').innerText = user.email || 'Google Connected';
+
+            document.getElementById('loggedInView').style.display = 'block';
+            document.getElementById('loggedOutView').style.display = 'none';
         }
 
+        function signOutUser() {
+            localStorage.removeItem('jonva_user');
+            document.getElementById('greetingHeader').innerText = 'Hello, Gulfam 🌟';
+            document.getElementById('greetingEmail').innerText = 'Your ideas, our AI power 🚀';
+            document.getElementById('userAvatar').innerText = 'G';
+            document.getElementById('cardAvatar').innerText = 'G';
+            document.getElementById('loggedInView').style.display = 'none';
+            document.getElementById('loggedOutView').style.display = 'block';
+        }
+
+        // Auto load saved user
         try {
             const savedUser = JSON.parse(localStorage.getItem('jonva_user'));
             if (savedUser) applyUserData(savedUser);
@@ -993,11 +1046,10 @@
             } else if (viewName === 'settings') {
                 document.getElementById('viewSettings').classList.add('active');
                 document.getElementById('tabSettings').classList.add('active');
-                renderGoogleButton();
             }
         }
 
-        /* Voice TTS Playback */
+        /* Voice TTS Output */
         async function speakOut(text) {
             if (!text) return;
             stopAudioPlayback();
@@ -1045,7 +1097,7 @@
             document.getElementById('stopSpeechBtn').style.display = 'none';
         }
 
-        /* Typewriter (Streaming) Effect */
+        /* Typewriter Streaming Effect */
         function streamTypewriter(bubble, text) {
             const words = text.split(' ');
             let accumulated = '';
@@ -1254,10 +1306,6 @@
         if (localStorage.getItem('jonva_theme') === 'light') setTheme('light');
         const savedAccent = localStorage.getItem('jonva_accent');
         if (savedAccent) setAccent(savedAccent);
-
-        window.onload = () => {
-            renderGoogleButton();
-        };
     </script>
 </body>
 </html>
