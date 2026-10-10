@@ -606,6 +606,36 @@
             font-weight: 600;
         }
 
+        /* Fail-Proof Custom Google Button */
+        .google-login-btn-custom {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+            background: #ffffff;
+            color: #1f2937;
+            font-size: 0.92rem;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 26px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+            transition: transform 0.15s ease;
+        }
+
+        .google-login-btn-custom:active {
+            transform: scale(0.96);
+        }
+
+        .google-login-btn-custom svg {
+            width: 20px;
+            height: 20px;
+        }
+
         /* Bottom Nav */
         .bottom-dock {
             position: fixed;
@@ -699,7 +729,7 @@
             <button class="audio-stop-pill" id="stopSpeechBtn" onclick="stopAudioPlayback()">⏹ Stop Voice</button>
             <button class="upgrade-badge">👑 Upgrade</button>
             <div class="circle-action-btn" onclick="switchNav('settings')" title="सेटिंग्स">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             </div>
         </div>
     </header>
@@ -883,27 +913,22 @@
                 </div>
             </div>
 
-            <div id="loggedOutView" style="text-align:center; padding:10px 0;">
-                <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:14px;">Sign in with your real Google account to sync profile & chats:</p>
+            <div id="loggedOutView" style="text-align:center; padding:12px 0;">
+                <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:16px;">Sign in with your real Google account to sync profile & chats:</p>
                 
-                <!-- Hardcoded Static GSI Elements for Zero Missing Client_ID Errors -->
-                <div id="g_id_onload"
-                     data-client_id="21441464026-phib04akpfro376dch70o78njunghook.apps.googleusercontent.com"
-                     data-context="signin"
-                     data-ux_mode="popup"
-                     data-callback="handleGoogleLogin"
-                     data-auto_prompt="false">
-                </div>
-                <div style="display:flex; justify-content:center;">
-                    <div class="g_id_signin"
-                         data-type="standard"
-                         data-shape="pill"
-                         data-theme="filled_blue"
-                         data-text="signin_with"
-                         data-size="large"
-                         data-logo_alignment="left">
-                    </div>
-                </div>
+                <!-- 100% Fail-Proof Direct Google Sign-In Button -->
+                <button class="google-login-btn-custom" onclick="loginWithGooglePopup()">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                    <span>Sign in with Google</span>
+                </button>
+
+                <!-- Optional GSI Mount Container (No conflicting HTML attributes) -->
+                <div id="gsiButtonSlot" style="margin-top:12px; display:flex; justify-content:center;"></div>
             </div>
         </div>
 
@@ -943,7 +968,7 @@
             <span>Tools</span>
         </button>
         <button class="dock-tab" id="tabSettings" onclick="switchNav('settings')">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             <span>Profile</span>
         </button>
     </nav>
@@ -964,27 +989,99 @@
     <script>
         const GOOGLE_CLIENT_ID = "21441464026-phib04akpfro376dch70o78njunghook.apps.googleusercontent.com";
         let currentAudio = null;
+        let tokenClient = null;
 
-        /* Real Google Sign-In Handler */
-        window.handleGoogleLogin = function(response) {
+        /* Bulletproof Google Authentication Engine */
+        function initGoogleSDK() {
+            if (window.google && google.accounts) {
+                // 1. Initialize OAuth2 Token Client (Always sends client_id in URL)
+                if (google.accounts.oauth2) {
+                    try {
+                        tokenClient = google.accounts.oauth2.initTokenClient({
+                            client_id: GOOGLE_CLIENT_ID,
+                            scope: "openid profile email",
+                            callback: async (tokenResponse) => {
+                                if (tokenResponse && tokenResponse.access_token) {
+                                    try {
+                                        const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                                            headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+                                        });
+                                        const profile = await res.json();
+                                        saveAndApplyUser({
+                                            name: profile.name || "User",
+                                            email: profile.email || "",
+                                            picture: profile.picture || ""
+                                        });
+                                    } catch (err) {
+                                        console.error("UserInfo fetch error:", err);
+                                    }
+                                }
+                            }
+                        });
+                    } catch (e) {
+                        console.warn("OAuth2 init notice:", e);
+                    }
+                }
+
+                // 2. Initialize ID Token for Google Button
+                if (google.accounts.id) {
+                    try {
+                        google.accounts.id.initialize({
+                            client_id: GOOGLE_CLIENT_ID,
+                            callback: handleGsiCredential,
+                            auto_select: false
+                        });
+                        const slot = document.getElementById("gsiButtonSlot");
+                        if (slot) {
+                            slot.innerHTML = "";
+                            google.accounts.id.renderButton(slot, {
+                                type: "standard",
+                                theme: "filled_blue",
+                                size: "large",
+                                shape: "pill",
+                                width: 280
+                            });
+                        }
+                    } catch (e) {
+                        console.warn("GSI init notice:", e);
+                    }
+                }
+            } else {
+                setTimeout(initGoogleSDK, 350);
+            }
+        }
+
+        window.loginWithGooglePopup = function() {
+            if (tokenClient) {
+                tokenClient.requestAccessToken({ prompt: "select_account" });
+            } else if (window.google && google.accounts && google.accounts.id) {
+                google.accounts.id.prompt();
+            } else {
+                alert("Google Service कनेक्ट हो रही है, 2 सेकंड बाद दोबारा दबाएँ।");
+            }
+        };
+
+        function handleGsiCredential(response) {
             try {
                 const base64Url = response.credential.split('.')[1];
                 const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
                 const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
                 const user = JSON.parse(jsonPayload);
-                
-                const profile = {
-                    name: user.name || 'User',
-                    email: user.email || '',
-                    picture: user.picture || ''
-                };
-
-                localStorage.setItem('jonva_user', JSON.stringify(profile));
-                applyUserData(profile);
+                saveAndApplyUser({
+                    name: user.name || "User",
+                    email: user.email || "",
+                    picture: user.picture || ""
+                });
             } catch (e) {
-                console.error("Google sign in parse error:", e);
+                console.error("JWT Parse Error:", e);
             }
-        };
+        }
+
+        function saveAndApplyUser(profile) {
+            localStorage.setItem('jonva_user', JSON.stringify(profile));
+            applyUserData(profile);
+            alert(`स्वागत है ${profile.name}! आपका अकाउंट कनेक्ट हो गया है।`);
+        }
 
         function applyUserData(user) {
             if (!user) return;
@@ -1019,7 +1116,7 @@
             document.getElementById('loggedOutView').style.display = 'block';
         }
 
-        // Auto load saved user
+        // Restore saved user on startup
         try {
             const savedUser = JSON.parse(localStorage.getItem('jonva_user'));
             if (savedUser) applyUserData(savedUser);
@@ -1046,10 +1143,11 @@
             } else if (viewName === 'settings') {
                 document.getElementById('viewSettings').classList.add('active');
                 document.getElementById('tabSettings').classList.add('active');
+                initGoogleSDK();
             }
         }
 
-        /* Voice TTS Output */
+        /* Voice Output */
         async function speakOut(text) {
             if (!text) return;
             stopAudioPlayback();
@@ -1151,7 +1249,6 @@
             addBubble('user', msg);
             isBotThinking = true;
 
-            // Thinking State
             const thinking = document.createElement('div');
             thinking.className = 'bubble bubble-ai';
             thinking.innerHTML = `
@@ -1196,7 +1293,6 @@
                     aiBubble.innerHTML = '✦ <b>JONVA AI</b>:';
                     document.getElementById('chatThread').appendChild(aiBubble);
 
-                    // Speak and Stream simultaneously
                     speakOut(aiReply);
                     streamTypewriter(aiBubble, aiReply);
                 }
@@ -1208,7 +1304,7 @@
             }
         }
 
-        /* Voice Assistant Engine */
+        /* Voice Engine */
         const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
         if (SpeechRec) {
@@ -1306,6 +1402,10 @@
         if (localStorage.getItem('jonva_theme') === 'light') setTheme('light');
         const savedAccent = localStorage.getItem('jonva_accent');
         if (savedAccent) setAccent(savedAccent);
+
+        window.addEventListener('load', () => {
+            initGoogleSDK();
+        });
     </script>
 </body>
 </html>
