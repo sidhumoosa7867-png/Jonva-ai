@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>JONVA AI — Your Smart AI Assistant</title>
     
-    <!-- Monetag Ads Integration (Preserved) -->
+    <!-- Monetag Ads Integration -->
     <meta name="monetag" content="613fff50ec71829d78acf2e8b284c370">
     <script src="https://quqe5.com/88/tag.min.js" data-zone="293279" async data-cfasync="false"></script>
     
@@ -120,7 +120,19 @@
         .top-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+        }
+
+        .audio-stop-pill {
+            display: none;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 0.74rem;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         .upgrade-badge {
@@ -151,7 +163,7 @@
             cursor: pointer;
         }
 
-        /* App Views */
+        /* Screen Views */
         .app-view {
             flex: 1;
             margin-top: 60px;
@@ -166,7 +178,7 @@
             display: flex;
         }
 
-        /* Banner */
+        /* Cosmic Banner */
         .cosmic-banner {
             width: 100%;
             min-height: 145px;
@@ -227,10 +239,6 @@
             font-size: 0.94rem;
         }
 
-        .search-capsule input::placeholder {
-            color: var(--text-muted);
-        }
-
         .capsule-mic-btn {
             background: none;
             border: none;
@@ -283,12 +291,11 @@
             font-size: 1.45rem;
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-            transition: transform 0.2s, border-color 0.2s;
+            transition: transform 0.2s;
         }
 
         .tool-item:active .tool-icon-box {
             transform: scale(0.92);
-            border-color: var(--accent-purple);
         }
 
         .tool-label {
@@ -297,7 +304,7 @@
             font-weight: 500;
         }
 
-        /* Recent Projects Carousel */
+        /* Recent Projects */
         .section-row-header {
             display: flex;
             justify-content: space-between;
@@ -309,13 +316,6 @@
             font-size: 0.95rem;
             font-weight: 700;
             color: var(--text-main);
-        }
-
-        .section-row-header a {
-            font-size: 0.78rem;
-            color: var(--accent-purple);
-            text-decoration: none;
-            cursor: pointer;
         }
 
         .recent-scroll-row {
@@ -337,7 +337,6 @@
             flex-direction: column;
             justify-content: space-between;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         .recent-card-title {
@@ -351,7 +350,7 @@
             color: var(--text-muted);
         }
 
-        /* Chat Screen */
+        /* Chat Stream */
         .chat-flow {
             display: flex;
             flex-direction: column;
@@ -389,6 +388,31 @@
             color: var(--text-main);
             border-bottom-left-radius: 4px;
             backdrop-filter: blur(14px);
+        }
+
+        /* Thinking Indicator */
+        .thinking-bubble {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #a5b4fc;
+            font-size: 0.88rem;
+            font-style: italic;
+        }
+
+        .thinking-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            animation: pulse-dot 1.2s infinite ease-in-out alternate;
+        }
+        .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+        .thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(0.6); opacity: 0.4; }
+            100% { transform: scale(1.2); opacity: 1; background: #06b6d4; }
         }
 
         .image-card-result {
@@ -502,7 +526,7 @@
             100% { height: 32px; background: #06b6d4; }
         }
 
-        /* Settings Card */
+        /* Settings */
         .settings-card {
             background: var(--bg-card);
             border: 1px solid var(--border-glass);
@@ -649,9 +673,10 @@
             </div>
         </div>
         <div class="top-actions">
+            <button class="audio-stop-pill" id="stopSpeechBtn" onclick="stopAudioPlayback()">⏹ Stop Voice</button>
             <button class="upgrade-badge">👑 Upgrade</button>
             <div class="circle-action-btn" onclick="switchNav('settings')" title="सेटिंग्स">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             </div>
         </div>
     </header>
@@ -715,7 +740,6 @@
         <!-- Recent Projects -->
         <div class="section-row-header">
             <h3>Recent Projects</h3>
-            <a onclick="switchNav('chat')">View All</a>
         </div>
         <div class="recent-scroll-row">
             <div class="recent-card" onclick="triggerFastQuery('Cinematic video effects kaise add karein?')">
@@ -842,13 +866,8 @@
                 User: <b id="displayUserName">Gulfam</b> (Free Plan)
             </div>
             
-            <!-- Real Working Google Sign In Component -->
-            <div id="g_id_onload"
-                 data-client_id="21441464026-phib04akpfro376dch70o78njunghook.apps.googleusercontent.com"
-                 data-callback="handleGoogleLogin"
-                 data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_blue"></div>
+            <!-- Guaranteed Client-ID Injected Google Button -->
+            <div id="googleButtonMount" style="display:flex; justify-content:center; min-height:45px;"></div>
         </div>
     </main>
 
@@ -881,7 +900,7 @@
         <div class="img-modal-box">
             <h3 style="font-size:1.1rem; color:#fff;">🎨 AI Image Generator</h3>
             <p style="font-size:0.78rem; color:#94a3b8; margin-top:4px;">Jo photo chahiye likhein, AI photo create karega:</p>
-            <textarea id="imgPromptInput" placeholder="Jaise: A futuristic cyberpunk car in a rainy street, 8k resolution, cinematic..."></textarea>
+            <textarea id="imgPromptInput" placeholder="Jaise: Superman flying in sky with sharp face, 8k resolution, cinematic lighting..."></textarea>
             <div style="display:flex; justify-content:flex-end; gap:8px;">
                 <button onclick="closeImageModal()" style="background:transparent; border:1px solid #64748b; color:#cbd5e1; padding:6px 14px; border-radius:8px;">Cancel</button>
                 <button onclick="submitImageGen()" style="background:linear-gradient(135deg, var(--accent-purple), var(--accent-blue)); border:none; color:#fff; padding:6px 16px; border-radius:8px; font-weight:600;">Generate Art ⚡</button>
@@ -890,7 +909,34 @@
     </div>
 
     <script>
-        /* Google Sign-In Callback */
+        const GOOGLE_CLIENT_ID = "21441464026-phib04akpfro376dch70o78njunghook.apps.googleusercontent.com";
+        let currentAudio = null;
+
+        /* Google Sign-In Initializer (Solves Missing Client_ID) */
+        function renderGoogleButton() {
+            if (window.google && google.accounts && google.accounts.id) {
+                try {
+                    google.accounts.id.initialize({
+                        client_id: GOOGLE_CLIENT_ID,
+                        callback: handleGoogleLogin,
+                        auto_select: false
+                    });
+                    const mountPoint = document.getElementById("googleButtonMount");
+                    if (mountPoint) {
+                        mountPoint.innerHTML = '';
+                        google.accounts.id.renderButton(mountPoint, {
+                            type: "standard",
+                            theme: "filled_blue",
+                            size: "large",
+                            shape: "pill"
+                        });
+                    }
+                } catch (e) {
+                    console.error("GSI Init error:", e);
+                }
+            }
+        }
+
         window.handleGoogleLogin = function(response) {
             try {
                 const base64Url = response.credential.split('.')[1];
@@ -905,7 +951,7 @@
                 }));
                 applyUserData(user);
             } catch (e) {
-                console.error("Google sign in parse error:", e);
+                console.error("Google parse error:", e);
             }
         };
 
@@ -921,7 +967,6 @@
             }
         }
 
-        // Restore user data if saved
         try {
             const savedUser = JSON.parse(localStorage.getItem('jonva_user'));
             if (savedUser) applyUserData(savedUser);
@@ -948,50 +993,74 @@
             } else if (viewName === 'settings') {
                 document.getElementById('viewSettings').classList.add('active');
                 document.getElementById('tabSettings').classList.add('active');
+                renderGoogleButton();
             }
         }
 
-        /* Image Generation */
-        function openImageModal() { document.getElementById('imageModal').style.display = 'flex'; }
-        function closeImageModal() { document.getElementById('imageModal').style.display = 'none'; }
+        /* Voice TTS Playback */
+        async function speakOut(text) {
+            if (!text) return;
+            stopAudioPlayback();
 
-        async function submitImageGen() {
-            const prompt = document.getElementById('imgPromptInput').value.trim();
-            if (!prompt) return;
-            closeImageModal();
-            switchNav('chat');
-            addBubble('user', `🎨 Generate Image: "${prompt}"`);
+            const cleanText = text
+                .replace(/```[\s\S]*?```/g, "")
+                .replace(/[*#_~`]/g, "")
+                .replace(/https?:\/\/\S+/g, "")
+                .trim()
+                .substring(0, 500);
 
-            const loadingBubble = addBubble('ai', '⏳ AI Image render ho rahi hai, kripya 3-4 second intezar karein...');
+            if (!cleanText) return;
+
+            document.getElementById('stopSpeechBtn').style.display = 'inline-block';
 
             try {
-                const res = await fetch('/generate-image', {
+                const res = await fetch('/tts', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: prompt })
+                    body: JSON.stringify({ text: cleanText, voice: 'hi-IN-SwaraNeural' })
                 });
-                const data = await res.json();
-                loadingBubble.remove();
 
-                if (data.image_url) {
-                    const aiBubble = document.createElement('div');
-                    aiBubble.className = 'bubble bubble-ai';
-                    aiBubble.innerHTML = `
-                        <div>✦ <b>JONVA AI</b>: Aapka image ready hai:</div>
-                        <div class="image-card-result">
-                            <img src="${data.image_url}" alt="${prompt}" loading="lazy">
-                            <div class="image-card-footer">
-                                <span style="font-size:0.75rem; color:#94a3b8;">Flux Engine 1024x1024</span>
-                                <a href="${data.image_url}" target="_blank" class="download-img-btn">⬇ Download</a>
-                            </div>
-                        </div>
-                    `;
-                    document.getElementById('chatThread').appendChild(aiBubble);
-                    window.scrollTo(0, document.body.scrollHeight);
+                if (res.ok) {
+                    const blob = await res.blob();
+                    currentAudio = new Audio(URL.createObjectURL(blob));
+                    currentAudio.onended = () => {
+                        document.getElementById('stopSpeechBtn').style.display = 'none';
+                    };
+                    currentAudio.onerror = () => {
+                        document.getElementById('stopSpeechBtn').style.display = 'none';
+                    };
+                    currentAudio.play();
                 }
-            } catch(e) {
-                loadingBubble.innerText = '⚠️ Image generate karne me samasya aayi.';
+            } catch (e) {
+                document.getElementById('stopSpeechBtn').style.display = 'none';
             }
+        }
+
+        function stopAudioPlayback() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio = null;
+            }
+            document.getElementById('stopSpeechBtn').style.display = 'none';
+        }
+
+        /* Typewriter (Streaming) Effect */
+        function streamTypewriter(bubble, text) {
+            const words = text.split(' ');
+            let accumulated = '';
+            let idx = 0;
+
+            const timer = setInterval(() => {
+                if (idx < words.length) {
+                    accumulated += (idx === 0 ? '' : ' ') + words[idx];
+                    bubble.innerHTML = `✦ <b>JONVA AI</b>:<br>${accumulated.replace(/\n/g, '<br>')}`;
+                    window.scrollTo(0, document.body.scrollHeight);
+                    idx++;
+                } else {
+                    clearInterval(timer);
+                }
+            }, 35);
         }
 
         /* Chat System */
@@ -1029,7 +1098,20 @@
 
             addBubble('user', msg);
             isBotThinking = true;
-            const thinking = addBubble('ai', '✦ JONVA AI soch raha hai...');
+
+            // Thinking State
+            const thinking = document.createElement('div');
+            thinking.className = 'bubble bubble-ai';
+            thinking.innerHTML = `
+                <div class="thinking-bubble">
+                    <span>🧠 Thinking</span>
+                    <div class="thinking-dot"></div>
+                    <div class="thinking-dot"></div>
+                    <div class="thinking-dot"></div>
+                </div>
+            `;
+            document.getElementById('chatThread').appendChild(thinking);
+            window.scrollTo(0, document.body.scrollHeight);
 
             try {
                 const res = await fetch('/chat', {
@@ -1054,11 +1136,21 @@
                         </div>
                     `;
                     document.getElementById('chatThread').appendChild(aiBubble);
+                    speakOut(data.reply);
                 } else {
-                    addBubble('ai', data.reply || data.response || 'Jawab prapt nahi hua.');
+                    const aiReply = data.reply || data.response || 'Jawab prapt nahi hua.';
+                    const aiBubble = document.createElement('div');
+                    aiBubble.className = 'bubble bubble-ai';
+                    aiBubble.innerHTML = '✦ <b>JONVA AI</b>:';
+                    document.getElementById('chatThread').appendChild(aiBubble);
+
+                    // Speak and Stream simultaneously
+                    speakOut(aiReply);
+                    streamTypewriter(aiBubble, aiReply);
                 }
             } catch(e) {
-                thinking.innerText = '⚠️ Server se sampark nahi ho saka.';
+                thinking.remove();
+                addBubble('ai', '⚠️ Server se sampark nahi ho saka.');
             } finally {
                 isBotThinking = false;
             }
@@ -1093,7 +1185,51 @@
         }
         document.getElementById('voiceHaloBtn').onclick = startVoiceEngine;
 
-        /* Themes & Colors */
+        /* Image Modal */
+        function openImageModal() { document.getElementById('imageModal').style.display = 'flex'; }
+        function closeImageModal() { document.getElementById('imageModal').style.display = 'none'; }
+
+        async function submitImageGen() {
+            const prompt = document.getElementById('imgPromptInput').value.trim();
+            if (!prompt) return;
+            closeImageModal();
+            switchNav('chat');
+            addBubble('user', `🎨 Generate Image: "${prompt}"`);
+
+            const loadingBubble = addBubble('ai', '⏳ AI Image render ho rahi hai, kripya 3-4 second intezar karein...');
+
+            try {
+                const res = await fetch('/generate-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+                const data = await res.json();
+                loadingBubble.remove();
+
+                if (data.image_url) {
+                    const aiBubble = document.createElement('div');
+                    aiBubble.className = 'bubble bubble-ai';
+                    aiBubble.innerHTML = `
+                        <div>✦ <b>JONVA AI</b>: Aapka image ready hai:</div>
+                        <div class="image-card-result">
+                            <img src="${data.image_url}" alt="${prompt}" loading="lazy">
+                            <div class="image-card-footer">
+                                <span style="font-size:0.75rem; color:#94a3b8;">Flux Engine 1024x1024</span>
+                                <a href="${data.image_url}" target="_blank" class="download-img-btn">⬇ Download</a>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('chatThread').appendChild(aiBubble);
+                    speakOut("Aapka image ready hai!");
+                    window.scrollTo(0, document.body.scrollHeight);
+                }
+            } catch(e) {
+                loadingBubble.innerText = '⚠️ Image generate karne me samasya aayi.';
+            }
+        }
+
+        /* Themes */
         function setTheme(t) {
             if (t === 'light') {
                 document.body.classList.add('light-mode');
@@ -1115,10 +1251,13 @@
             localStorage.setItem('jonva_accent', color);
         }
 
-        // Restore theme & accent
         if (localStorage.getItem('jonva_theme') === 'light') setTheme('light');
         const savedAccent = localStorage.getItem('jonva_accent');
         if (savedAccent) setAccent(savedAccent);
+
+        window.onload = () => {
+            renderGoogleButton();
+        };
     </script>
 </body>
 </html>
