@@ -2,6 +2,7 @@ import os
 import time
 import glob
 import asyncio
+import urllib.parse
 from flask import Flask, request, jsonify, send_file, send_from_directory
 import requests
 import edge_tts
@@ -27,6 +28,29 @@ def cleanup_old_audio():
 def home():
     return send_from_directory(".", "index.html")
 
+# Real AI Image Generation Route (State-of-the-Art Flux Engine)
+@app.route("/generate-image", methods=["POST"])
+@app.route("/api/generate-image", methods=["POST"])
+def generate_image():
+    if not request.is_json:
+        return jsonify({"error": "JSON format required"}), 400
+    
+    data = request.get_json()
+    prompt = data.get("prompt", "").strip()
+    if not prompt:
+        return jsonify({"error": "Prompt cannot be empty"}), 400
+
+    encoded_prompt = urllib.parse.quote(prompt)
+    seed = int(time.time() * 1000) % 999999
+    # Ultra-realistic Flux model image endpoint
+    image_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&model=flux&nologo=true&seed={seed}"
+    
+    return jsonify({
+        "status": "success",
+        "image_url": image_url,
+        "prompt": prompt
+    })
+
 @app.route("/chat", methods=["POST"])
 @app.route("/api/chat", methods=["POST"])
 def chat():
@@ -40,17 +64,31 @@ def chat():
     if not user_message:
         return jsonify({"error": "Message cannot be empty."}), 400
 
-    if len(user_message) > 4000:
-        return jsonify({"error": "Message is too long."}), 400
+    # Auto-detect image generation requests
+    lower_msg = user_message.lower()
+    img_triggers = ["generate image", "image of", "photo of", "picture of", "photo banao", "image banao", "tasveer", "draw "]
+    if any(trigger in lower_msg for trigger in img_triggers):
+        clean_prompt = user_message
+        for t in ["generate an image of", "generate image of", "create an image of", "photo banao", "image banao"]:
+            clean_prompt = clean_prompt.replace(t, "")
+        clean_prompt = clean_prompt.strip() or user_message
+        encoded_prompt = urllib.parse.quote(clean_prompt)
+        seed = int(time.time() * 1000) % 999999
+        img_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&model=flux&nologo=true&seed={seed}"
+        return jsonify({
+            "reply": f"Maine aapki request ke anusaar image create kar di hai: '{clean_prompt}'",
+            "image_url": img_url,
+            "status": "success"
+        })
 
     api_key = os.getenv("GROQ_API_KEY", "").strip()
     if not api_key:
-        return jsonify({"error": "Groq API Key is not set in Render environment."}), 500
+        return jsonify({"error": "Groq API Key is missing in Render environment."}), 500
 
     system_prompt = (
-        "You are JONVA AI, a polite, smart, and helpful AI assistant. "
-        "Reply naturally in Hindi, English, or Hinglish depending on what the user asks. "
-        "Keep answers clear, well-formatted, and helpful."
+        "You are JONVA AI, a futuristic and highly intelligent AI assistant created by Gulfam. "
+        "You help users with AI tools, coding, creative ideas, homework, and technology. "
+        "Reply naturally in Hindi, English, or Hinglish with clean formatting, bullet points, and friendly emojis."
     )
 
     headers = {
@@ -118,14 +156,6 @@ def tts():
         return jsonify({"error": "Could not generate audio."}), 500
     except Exception as e:
         return jsonify({"error": f"TTS error: {str(e)}"}), 500
-
-@app.route("/health", methods=["GET"])
-def health():
-    return jsonify({
-        "status": "ok",
-        "service": "JONVA AI",
-        "api_configured": bool(os.getenv("GROQ_API_KEY"))
-    }), 200
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
