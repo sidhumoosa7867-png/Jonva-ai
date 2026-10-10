@@ -8,27 +8,28 @@
     <!-- Monetag Ads Integration (Preserved) -->
     <meta name="monetag" content="613fff50ec71829d78acf2e8b284c370">
     <script src="https://quqe5.com/88/tag.min.js" data-zone="293279" async data-cfasync="false"></script>
+    
+    <!-- Google Identity Services SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <style>
         :root {
             --bg-deep: #060919;
-            --bg-card: rgba(18, 24, 48, 0.75);
+            --bg-card: rgba(18, 24, 48, 0.78);
             --border-glass: rgba(99, 102, 241, 0.22);
             --accent-purple: #6366f1;
-            --accent-violet: #8b5cf6;
             --accent-blue: #3b82f6;
-            --accent-cyan: #06b6d4;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --user-bubble: #3730a3;
-            --ai-bubble: rgba(22, 29, 58, 0.9);
+            --user-bubble: #4338ca;
+            --ai-bubble: rgba(22, 29, 58, 0.92);
             --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body.light-mode {
             --bg-deep: #f1f5f9;
-            --bg-card: rgba(255, 255, 255, 0.85);
-            --border-glass: rgba(99, 102, 241, 0.2);
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --border-glass: rgba(99, 102, 241, 0.25);
             --text-main: #0f172a;
             --text-muted: #64748b;
             --user-bubble: #6366f1;
@@ -46,17 +47,18 @@
             font-family: var(--font-stack);
             background-color: var(--bg-deep);
             background-image: 
-                radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
-                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.12) 0%, transparent 45%),
-                radial-gradient(circle at 50% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+                radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 50% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Top Bar (Exact Header from Photo) */
+        /* Top Header */
         .top-bar {
             position: fixed;
             top: 0;
@@ -67,7 +69,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 16px;
-            background: rgba(6, 9, 25, 0.85);
+            background: rgba(6, 9, 25, 0.88);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             border-bottom: 1px solid var(--border-glass);
@@ -92,12 +94,19 @@
             font-weight: 700;
             color: #fff;
             font-size: 0.9rem;
+            overflow: hidden;
+        }
+
+        .avatar-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .greeting-title {
-            font-size: 0.98rem;
+            font-size: 0.96rem;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-main);
             display: flex;
             align-items: center;
             gap: 4px;
@@ -142,7 +151,7 @@
             cursor: pointer;
         }
 
-        /* Screen Views */
+        /* App Views */
         .app-view {
             flex: 1;
             margin-top: 60px;
@@ -157,31 +166,21 @@
             display: flex;
         }
 
-        /* --- 1. HOME DASHBOARD (Panel 1 & 9) --- */
+        /* Banner */
         .cosmic-banner {
-            position: relative;
             width: 100%;
-            min-height: 155px;
+            min-height: 145px;
             border-radius: 18px;
             background: linear-gradient(135deg, #111836 0%, #1e1b4b 50%, #311042 100%);
-            border: 1px solid rgba(139, 92, 246, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.35);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 20px;
-            overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             margin-bottom: 16px;
-        }
-
-        .cosmic-banner::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
-            pointer-events: none;
         }
 
         .banner-logo {
@@ -196,11 +195,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .banner-sparkle {
-            font-size: 1.6rem;
-            filter: drop-shadow(0 0 10px #6366f1);
-        }
-
         .banner-tagline {
             font-size: 0.8rem;
             color: #a5b4fc;
@@ -209,10 +203,10 @@
             text-transform: uppercase;
         }
 
-        /* Search Bar (Panel 1 & 9) */
+        /* Search Capsule */
         .search-capsule {
             width: 100%;
-            background: rgba(18, 24, 48, 0.85);
+            background: var(--bg-card);
             border: 1px solid var(--border-glass);
             border-radius: 30px;
             padding: 8px 12px 8px 18px;
@@ -229,12 +223,12 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #ffffff;
+            color: var(--text-main);
             font-size: 0.94rem;
         }
 
         .search-capsule input::placeholder {
-            color: #64748b;
+            color: var(--text-muted);
         }
 
         .capsule-mic-btn {
@@ -260,7 +254,7 @@
             box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
         }
 
-        /* 8 Quick Tools Grid (Exact from Photo) */
+        /* Tools Grid */
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -299,12 +293,11 @@
 
         .tool-label {
             font-size: 0.72rem;
-            color: #cbd5e1;
+            color: var(--text-main);
             font-weight: 500;
-            line-height: 1.15;
         }
 
-        /* Recent Projects Horizontal Carousel */
+        /* Recent Projects Carousel */
         .section-row-header {
             display: flex;
             justify-content: space-between;
@@ -315,7 +308,7 @@
         .section-row-header h3 {
             font-size: 0.95rem;
             font-weight: 700;
-            color: #f1f5f9;
+            color: var(--text-main);
         }
 
         .section-row-header a {
@@ -347,10 +340,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
-        .recent-card-top {
-            font-size: 1.3rem;
-        }
-
         .recent-card-title {
             font-size: 0.76rem;
             font-weight: 700;
@@ -362,7 +351,7 @@
             color: var(--text-muted);
         }
 
-        /* --- 2. CHAT SCREEN (Panel 2) --- */
+        /* Chat Screen */
         .chat-flow {
             display: flex;
             flex-direction: column;
@@ -376,7 +365,6 @@
             border-radius: 18px;
             font-size: 0.92rem;
             line-height: 1.5;
-            position: relative;
             word-wrap: break-word;
             animation: fadeIn 0.25s ease-out;
         }
@@ -398,7 +386,7 @@
             align-self: flex-start;
             background: var(--ai-bubble);
             border: 1px solid var(--border-glass);
-            color: #f1f5f9;
+            color: var(--text-main);
             border-bottom-left-radius: 4px;
             backdrop-filter: blur(14px);
         }
@@ -423,7 +411,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(18, 24, 48, 0.9);
+            background: rgba(18, 24, 48, 0.95);
         }
 
         .download-img-btn {
@@ -437,7 +425,7 @@
             text-decoration: none;
         }
 
-        /* --- 7. VOICE ASSISTANT SCREEN (Panel 7) --- */
+        /* Voice Stage */
         .voice-stage-container {
             display: flex;
             flex-direction: column;
@@ -461,8 +449,8 @@
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            border: 2px solid rgba(99, 102, 241, 0.4);
-            animation: haloPulse 3s infinite ease-out;
+            border: 2px solid var(--accent-purple);
+            animation: haloPulse 2.5s infinite ease-out;
         }
 
         @keyframes haloPulse {
@@ -474,8 +462,8 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, #818cf8 0%, #4f46e5 60%, #1e1b4b 100%);
-            box-shadow: 0 0 45px rgba(99, 102, 241, 0.7);
+            background: radial-gradient(circle at 35% 30%, #818cf8 0%, var(--accent-purple) 60%, #1e1b4b 100%);
+            box-shadow: 0 0 45px var(--accent-purple);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -504,7 +492,6 @@
             border-radius: 2px;
             animation: soundWave 1.2s infinite ease-in-out alternate;
         }
-
         .wave-bar:nth-child(2) { animation-delay: 0.15s; }
         .wave-bar:nth-child(3) { animation-delay: 0.3s; }
         .wave-bar:nth-child(4) { animation-delay: 0.45s; }
@@ -515,7 +502,7 @@
             100% { height: 32px; background: #06b6d4; }
         }
 
-        /* --- 8. SETTINGS SCREEN (Panel 8) --- */
+        /* Settings Card */
         .settings-card {
             background: var(--bg-card);
             border: 1px solid var(--border-glass);
@@ -527,7 +514,7 @@
         .settings-card h4 {
             font-size: 0.9rem;
             margin-bottom: 12px;
-            color: #f1f5f9;
+            color: var(--text-main);
         }
 
         .theme-select-row {
@@ -548,7 +535,8 @@
 
         .theme-box-opt.selected {
             border-color: var(--accent-purple);
-            background: rgba(99, 102, 241, 0.15);
+            background: rgba(99, 102, 241, 0.2);
+            color: #ffffff;
         }
 
         .color-dot-row {
@@ -558,25 +546,27 @@
         }
 
         .color-dot {
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             cursor: pointer;
             border: 2px solid transparent;
+            transition: transform 0.2s;
         }
 
         .color-dot.active {
-            border-color: #fff;
+            border-color: #ffffff;
+            transform: scale(1.15);
         }
 
-        /* Bottom Fixed Navigation Dock (Panel 9) */
+        /* Bottom Nav */
         .bottom-dock {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             height: 64px;
-            background: rgba(6, 9, 25, 0.92);
+            background: rgba(6, 9, 25, 0.94);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-glass);
@@ -612,7 +602,7 @@
             color: var(--accent-purple);
         }
 
-        /* Modal for Image Generator Prompt */
+        /* Modal */
         .img-modal {
             position: fixed;
             inset: 0;
@@ -649,35 +639,33 @@
 </head>
 <body>
 
-    <!-- Header Top Bar (Panel 1 & 9) -->
+    <!-- Top Bar -->
     <header class="top-bar">
         <div class="user-greeting-box">
-            <div class="avatar-img">G</div>
+            <div class="avatar-img" id="userAvatar">G</div>
             <div>
-                <div class="greeting-title">Hello, Gulfam 🌟</div>
+                <div class="greeting-title" id="greetingHeader">Hello, Gulfam 🌟</div>
                 <div class="greeting-sub">Your ideas, our AI power 🚀</div>
             </div>
         </div>
         <div class="top-actions">
             <button class="upgrade-badge">👑 Upgrade</button>
             <div class="circle-action-btn" onclick="switchNav('settings')" title="सेटिंग्स">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             </div>
         </div>
     </header>
 
-    <!-- VIEW 1: HOME DASHBOARD (Panel 1 & 9) -->
+    <!-- VIEW 1: HOME DASHBOARD -->
     <main class="app-view active" id="viewHome">
-        <!-- Cosmic Landscape Hero Banner -->
         <div class="cosmic-banner">
             <div class="banner-logo">
-                <span class="banner-sparkle">✦</span>
-                <span>JONOVA AI</span>
+                <span style="font-size:1.6rem; filter:drop-shadow(0 0 10px #6366f1);">✦</span>
+                <span>JONVA AI</span>
             </div>
             <div class="banner-tagline">Think · Create · Explore</div>
         </div>
 
-        <!-- Universal Search Capsule -->
         <div class="search-capsule">
             <button class="capsule-mic-btn" onclick="switchNav('voice')" title="माइक">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
@@ -688,7 +676,7 @@
             </button>
         </div>
 
-        <!-- 8 AI Quick Tools Grid (Exact from Photo) -->
+        <!-- 8 Tools Grid -->
         <div class="tools-grid">
             <div class="tool-item" onclick="switchNav('chat')">
                 <div class="tool-icon-box">💬</div>
@@ -702,19 +690,19 @@
                 <div class="tool-icon-box" style="border-color:#06b6d4;">🎙️</div>
                 <div class="tool-label">Voice Assistant</div>
             </div>
-            <div class="tool-item" onclick="triggerFastQuery('Video editing ke liye best cinematic effects aur tips batao')">
+            <div class="tool-item" onclick="triggerFastQuery('Video editing ke liye top cinematic effects aur transitions list karo')">
                 <div class="tool-icon-box">🎬</div>
                 <div class="tool-label">Video Editor</div>
             </div>
-            <div class="tool-item" onclick="triggerFastQuery('Latest AI research models aur tools ki list do')">
+            <div class="tool-item" onclick="triggerFastQuery('Latest experimental AI models aur tools ki complete list do')">
                 <div class="tool-icon-box">🧪</div>
                 <div class="tool-label">AI Lab</div>
             </div>
-            <div class="tool-item" onclick="triggerFastQuery('Aaj ke trending tech news updates kya hain?')">
+            <div class="tool-item" onclick="triggerFastQuery('Aaj ke latest tech updates aur viral news search karo')">
                 <div class="tool-icon-box">🔍</div>
                 <div class="tool-label">Web Search</div>
             </div>
-            <div class="tool-item" onclick="triggerFastQuery('Kisi bhi document ya PDF ko summarize karne ka tarika')">
+            <div class="tool-item" onclick="triggerFastQuery('Kisi bhi document ya report ko analyze aur summarize karne ke steps batao')">
                 <div class="tool-icon-box">📄</div>
                 <div class="tool-label">Doc Reader</div>
             </div>
@@ -724,35 +712,35 @@
             </div>
         </div>
 
-        <!-- Recent Projects Horizontal Carousel -->
+        <!-- Recent Projects -->
         <div class="section-row-header">
             <h3>Recent Projects</h3>
             <a onclick="switchNav('chat')">View All</a>
         </div>
         <div class="recent-scroll-row">
             <div class="recent-card" onclick="triggerFastQuery('Cinematic video effects kaise add karein?')">
-                <div class="recent-card-top">🎬</div>
+                <div style="font-size:1.3rem;">🎬</div>
                 <div>
                     <div class="recent-card-title">My AI Video</div>
                     <div class="recent-card-time">2 min ago</div>
                 </div>
             </div>
             <div class="recent-card" onclick="switchNav('chat')">
-                <div class="recent-card-top">💬</div>
+                <div style="font-size:1.3rem;">💬</div>
                 <div>
                     <div class="recent-card-title">Chat with AI</div>
                     <div class="recent-card-time">10 min ago</div>
                 </div>
             </div>
             <div class="recent-card" onclick="openImageModal()">
-                <div class="recent-card-top">🖼️</div>
+                <div style="font-size:1.3rem;">🖼️</div>
                 <div>
                     <div class="recent-card-title">Image Creation</div>
                     <div class="recent-card-time">1 hour ago</div>
                 </div>
             </div>
             <div class="recent-card" onclick="switchNav('voice')">
-                <div class="recent-card-top">🎙️</div>
+                <div style="font-size:1.3rem;">🎙️</div>
                 <div>
                     <div class="recent-card-title">Voice Note</div>
                     <div class="recent-card-time">2 hours ago</div>
@@ -761,11 +749,11 @@
         </div>
     </main>
 
-    <!-- VIEW 2: CHAT INTERFACE (Panel 2) -->
+    <!-- VIEW 2: CHAT INTERFACE -->
     <main class="app-view" id="viewChat">
         <div class="chat-flow" id="chatThread">
             <div class="bubble bubble-ai">
-                ✦ <b>JONVA AI</b>: Hello Gulfam! Main aapka smart AI assistant hoon. Aap mujhse koi bhi sawal pooch sakte hain ya <b>AI Photo</b> generate karne ko bol sakte hain!
+                ✦ <b>JONVA AI</b>: Hello Gulfam! Main aapka smart AI assistant hoon. Aap sawal pooch sakte hain, bol sakte hain ya <b>AI Photo</b> generate kar sakte hain!
             </div>
         </div>
         <div style="position:fixed; bottom:64px; left:0; right:0; padding:10px 16px; background:rgba(6,9,25,0.95); border-top:1px solid var(--border-glass);">
@@ -778,7 +766,7 @@
         </div>
     </main>
 
-    <!-- VIEW 3: VOICE ASSISTANT (Panel 7) -->
+    <!-- VIEW 3: VOICE ASSISTANT -->
     <main class="app-view" id="viewVoice">
         <div class="voice-stage-container">
             <div class="voice-halo" id="voiceHaloBtn">
@@ -787,7 +775,7 @@
                     <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                 </div>
             </div>
-            <h2 style="margin-top:22px; font-size:1.3rem;" id="voiceStatusText">Listening...</h2>
+            <h2 style="margin-top:22px; font-size:1.3rem;" id="voiceStatusText">Tap to speak</h2>
             <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Speak now, I'm here to help</p>
             <div class="voice-wave-bars">
                 <div class="wave-bar"></div>
@@ -799,7 +787,7 @@
         </div>
     </main>
 
-    <!-- VIEW 4: TOOLS DIRECTORY (Panel 4) -->
+    <!-- VIEW 4: TOOLS DIRECTORY -->
     <main class="app-view" id="viewTools">
         <h3 style="margin-bottom:14px;">Explore AI Tools</h3>
         <div class="tools-grid" style="grid-template-columns: repeat(3, 1fr);">
@@ -807,30 +795,30 @@
                 <div class="tool-icon-box">🎨</div>
                 <div class="tool-label">Image Generator</div>
             </div>
-            <div class="tool-item" onclick="triggerFastQuery('Code helper mode active: Mujhse coding questions poochiye')">
+            <div class="tool-item" onclick="triggerFastQuery('Code helper mode: Best Python script templates')">
                 <div class="tool-icon-box">💻</div>
                 <div class="tool-label">Code Helper</div>
             </div>
-            <div class="tool-item" onclick="triggerFastQuery('Article ya paragraph summary tool')">
+            <div class="tool-item" onclick="triggerFastQuery('Paragraph summarize mode')">
                 <div class="tool-icon-box">📑</div>
                 <div class="tool-label">Summarizer</div>
             </div>
-            <div class="tool-item" onclick="triggerFastQuery('Universal Language Translator active')">
+            <div class="tool-item" onclick="triggerFastQuery('Universal Language Translator')">
                 <div class="tool-icon-box">🌐</div>
                 <div class="tool-label">Translator</div>
             </div>
-            <div class="tool-item" onclick="triggerFastQuery('Math problem solving helper')">
+            <div class="tool-item" onclick="triggerFastQuery('Math problem solution step by step')">
                 <div class="tool-icon-box">🧮</div>
                 <div class="tool-label">Math Reader</div>
             </div>
-            <div class="tool-item" onclick="triggerFastQuery('Professional AI Copywriter & Storyteller')">
+            <div class="tool-item" onclick="triggerFastQuery('Creative story & script writer')">
                 <div class="tool-icon-box">✍️</div>
                 <div class="tool-label">AI Writer</div>
             </div>
         </div>
     </main>
 
-    <!-- VIEW 5: SETTINGS & APPEARANCE (Panel 8) -->
+    <!-- VIEW 5: SETTINGS & GOOGLE LOGIN -->
     <main class="app-view" id="viewSettings">
         <div class="settings-card">
             <h4>Appearance</h4>
@@ -838,23 +826,33 @@
                 <div class="theme-box-opt selected" id="optDark" onclick="setTheme('dark')">🌙 Dark</div>
                 <div class="theme-box-opt" id="optLight" onclick="setTheme('light')">☀️ Light</div>
             </div>
-            <div style="margin-top:14px; font-size:0.82rem; color:#94a3b8;">Accent Color</div>
+            <div style="margin-top:14px; font-size:0.82rem; color:var(--text-muted);">Accent Color</div>
             <div class="color-dot-row">
-                <div class="color-dot active" style="background:#6366f1;"></div>
-                <div class="color-dot" style="background:#3b82f6;"></div>
-                <div class="color-dot" style="background:#8b5cf6;"></div>
-                <div class="color-dot" style="background:#06b6d4;"></div>
-                <div class="color-dot" style="background:#ec4899;"></div>
+                <div class="color-dot active" style="background:#6366f1;" onclick="setAccent('#6366f1', this)"></div>
+                <div class="color-dot" style="background:#3b82f6;" onclick="setAccent('#3b82f6', this)"></div>
+                <div class="color-dot" style="background:#8b5cf6;" onclick="setAccent('#8b5cf6', this)"></div>
+                <div class="color-dot" style="background:#06b6d4;" onclick="setAccent('#06b6d4', this)"></div>
+                <div class="color-dot" style="background:#ec4899;" onclick="setAccent('#ec4899', this)"></div>
             </div>
         </div>
+
         <div class="settings-card">
-            <h4>Account & Preferences</h4>
-            <div style="font-size:0.86rem; color:#cbd5e1; margin-bottom:8px;">User: <b>Gulfam (Free Plan)</b></div>
-            <div style="font-size:0.82rem; color:#94a3b8;">Language: English & Hindi (India)</div>
+            <h4>Google Sign-In & Account</h4>
+            <div id="accountInfoBox" style="font-size:0.86rem; margin-bottom:12px;">
+                User: <b id="displayUserName">Gulfam</b> (Free Plan)
+            </div>
+            
+            <!-- Real Working Google Sign In Component -->
+            <div id="g_id_onload"
+                 data-client_id="21441464026-phib04akpfro376dch70o78njunghook.apps.googleusercontent.com"
+                 data-callback="handleGoogleLogin"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_blue"></div>
         </div>
     </main>
 
-    <!-- Bottom Mobile Dock (Panel 9) -->
+    <!-- Bottom Dock -->
     <nav class="bottom-dock">
         <button class="dock-tab active" id="tabHome" onclick="switchNav('home')">
             <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
@@ -873,25 +871,62 @@
             <span>Tools</span>
         </button>
         <button class="dock-tab" id="tabSettings" onclick="switchNav('settings')">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             <span>Profile</span>
         </button>
     </nav>
 
-    <!-- AI Image Generator Modal -->
+    <!-- Modal Image -->
     <div class="img-modal" id="imageModal">
         <div class="img-modal-box">
             <h3 style="font-size:1.1rem; color:#fff;">🎨 AI Image Generator</h3>
-            <p style="font-size:0.78rem; color:#94a3b8; margin-top:4px;">Aap jo chahein likhein, AI photo create karega:</p>
-            <textarea id="imgPromptInput" placeholder="Jaise: A cyberpunk tiger in a neon Tokyo street, 8k resolution, cinematic lighting..."></textarea>
+            <p style="font-size:0.78rem; color:#94a3b8; margin-top:4px;">Jo photo chahiye likhein, AI photo create karega:</p>
+            <textarea id="imgPromptInput" placeholder="Jaise: A futuristic cyberpunk car in a rainy street, 8k resolution, cinematic..."></textarea>
             <div style="display:flex; justify-content:flex-end; gap:8px;">
                 <button onclick="closeImageModal()" style="background:transparent; border:1px solid #64748b; color:#cbd5e1; padding:6px 14px; border-radius:8px;">Cancel</button>
-                <button onclick="submitImageGen()" style="background:linear-gradient(135deg, #6366f1, #3b82f6); border:none; color:#fff; padding:6px 16px; border-radius:8px; font-weight:600;">Generate Art ⚡</button>
+                <button onclick="submitImageGen()" style="background:linear-gradient(135deg, var(--accent-purple), var(--accent-blue)); border:none; color:#fff; padding:6px 16px; border-radius:8px; font-weight:600;">Generate Art ⚡</button>
             </div>
         </div>
     </div>
 
     <script>
+        /* Google Sign-In Callback */
+        window.handleGoogleLogin = function(response) {
+            try {
+                const base64Url = response.credential.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+                const user = JSON.parse(jsonPayload);
+                
+                localStorage.setItem('jonva_user', JSON.stringify({
+                    name: user.name,
+                    email: user.email,
+                    picture: user.picture
+                }));
+                applyUserData(user);
+            } catch (e) {
+                console.error("Google sign in parse error:", e);
+            }
+        };
+
+        function applyUserData(user) {
+            if (!user) return;
+            const firstName = user.name ? user.name.split(' ')[0] : 'Gulfam';
+            document.getElementById('greetingHeader').innerText = `Hello, ${firstName} 🌟`;
+            document.getElementById('displayUserName').innerText = user.name;
+            if (user.picture) {
+                document.getElementById('userAvatar').innerHTML = `<img src="${user.picture}" alt="user">`;
+            } else {
+                document.getElementById('userAvatar').innerText = firstName[0];
+            }
+        }
+
+        // Restore user data if saved
+        try {
+            const savedUser = JSON.parse(localStorage.getItem('jonva_user'));
+            if (savedUser) applyUserData(savedUser);
+        } catch(e) {}
+
         /* Navigation Controller */
         function switchNav(viewName) {
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
@@ -916,7 +951,7 @@
             }
         }
 
-        /* Image Modal */
+        /* Image Generation */
         function openImageModal() { document.getElementById('imageModal').style.display = 'flex'; }
         function closeImageModal() { document.getElementById('imageModal').style.display = 'none'; }
 
@@ -947,7 +982,7 @@
                             <img src="${data.image_url}" alt="${prompt}" loading="lazy">
                             <div class="image-card-footer">
                                 <span style="font-size:0.75rem; color:#94a3b8;">Flux Engine 1024x1024</span>
-                                <a href="${data.image_url}" target="_blank" download="jonva_ai.jpg" class="download-img-btn">⬇ Download</a>
+                                <a href="${data.image_url}" target="_blank" class="download-img-btn">⬇ Download</a>
                             </div>
                         </div>
                     `;
@@ -984,13 +1019,16 @@
             sendChatMessage();
         }
 
+        let isBotThinking = false;
         async function sendChatMessage() {
+            if (isBotThinking) return;
             const field = document.getElementById('chatInputField');
             const msg = field.value.trim();
             if (!msg) return;
             field.value = '';
 
             addBubble('user', msg);
+            isBotThinking = true;
             const thinking = addBubble('ai', '✦ JONVA AI soch raha hai...');
 
             try {
@@ -1021,6 +1059,8 @@
                 }
             } catch(e) {
                 thinking.innerText = '⚠️ Server se sampark nahi ho saka.';
+            } finally {
+                isBotThinking = false;
             }
         }
 
@@ -1030,6 +1070,7 @@
         if (SpeechRec) {
             recognition = new SpeechRec();
             recognition.continuous = false;
+            recognition.lang = 'hi-IN';
             recognition.onresult = (e) => {
                 const heard = e.results[0][0].transcript;
                 if (heard) {
@@ -1052,18 +1093,32 @@
         }
         document.getElementById('voiceHaloBtn').onclick = startVoiceEngine;
 
-        /* Theme Settings */
+        /* Themes & Colors */
         function setTheme(t) {
             if (t === 'light') {
                 document.body.classList.add('light-mode');
                 document.getElementById('optLight').classList.add('selected');
                 document.getElementById('optDark').classList.remove('selected');
+                localStorage.setItem('jonva_theme', 'light');
             } else {
                 document.body.classList.remove('light-mode');
                 document.getElementById('optDark').classList.add('selected');
                 document.getElementById('optLight').classList.remove('selected');
+                localStorage.setItem('jonva_theme', 'dark');
             }
         }
+
+        function setAccent(color, element) {
+            document.documentElement.style.setProperty('--accent-purple', color);
+            document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+            if (element) element.classList.add('active');
+            localStorage.setItem('jonva_accent', color);
+        }
+
+        // Restore theme & accent
+        if (localStorage.getItem('jonva_theme') === 'light') setTheme('light');
+        const savedAccent = localStorage.getItem('jonva_accent');
+        if (savedAccent) setAccent(savedAccent);
     </script>
 </body>
 </html>

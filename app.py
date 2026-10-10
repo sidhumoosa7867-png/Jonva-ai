@@ -10,7 +10,15 @@ import edge_tts
 app = Flask(__name__, static_folder='.', static_url_path='')
 
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL = "llama-3.1-8b-instant"
+# Active production models in order of priority
+CANDIDATE_MODELS = [
+    "llama-3.3-70b-versatile",
+    "llama3-8b-8192",
+    "llama-3.1-8b-instant",
+    "mixtral-8x7b-32768",
+    "gemma2-9b-it"
+]
+active_model = CANDIDATE_MODELS[0]
 
 AUDIO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "temp_audio")
 os.makedirs(AUDIO_DIR, exist_ok=True)
@@ -28,7 +36,7 @@ def cleanup_old_audio():
 def home():
     return send_from_directory(".", "index.html")
 
-# Real AI Image Generation Route (Flux Engine - Gemini Quality)
+# Real AI Image Generator (Flux Engine)
 @app.route("/generate-image", methods=["POST"])
 @app.route("/api/generate-image", methods=["POST"])
 def generate_image():
@@ -53,6 +61,7 @@ def generate_image():
 @app.route("/chat", methods=["POST"])
 @app.route("/api/chat", methods=["POST"])
 def chat():
+    global active_model
     if not request.is_json:
         return jsonify({"error": "JSON format required."}), 400
 
@@ -63,9 +72,9 @@ def chat():
     if not user_message:
         return jsonify({"error": "Message cannot be empty."}), 400
 
-    # Auto Image Generator Detection
+    # Auto Image Generator trigger
     lower_msg = user_message.lower()
-    img_triggers = ["generate image", "image of", "photo of", "picture of", "photo banao", "image banao", "tasveer", "draw "]
+    img_triggers = ["generate image", "image of", "photo of", "picture of", "photo banao", "image banao", "tasveer"]
     if any(trigger in lower_msg for trigger in img_triggers):
         clean_prompt = user_message
         for t in ["generate an image of", "generate image of", "create an image of", "photo banao", "image banao"]:
@@ -75,7 +84,7 @@ def chat():
         seed = int(time.time() * 1000) % 999999
         img_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&model=flux&nologo=true&seed={seed}"
         return jsonify({
-            "reply": f"Maine aapki request ke anusaar HD image create kar di hai: '{clean_prompt}'",
+            "reply": f"Maine aapki request par HD image create kar di hai: '{clean_prompt}'",
             "image_url": img_url,
             "status": "success"
         })
@@ -85,9 +94,9 @@ def chat():
         return jsonify({"error": "Groq API Key is missing in Render environment."}), 500
 
     system_prompt = (
-        "You are JONVA AI, a futuristic and highly intelligent AI assistant created by Gulfam. "
-        "You help users with AI tools, video editing, coding, creative writing, homework, and technology. "
-        "Reply naturally in Hindi, English, or Hinglish with clean formatting, bullet points, and friendly emojis."
+        "You are JONVA AI, a polite, intelligent, and highly capable AI assistant created by Gulfam. "
+        "You help users with AI tools, video editing, coding, creative ideas, and everyday answers. "
+        "Communicate naturally in Hindi, English, or Hinglish with clean formatting and friendly emojis."
     )
 
     headers = {
@@ -95,34 +104,37 @@ def chat():
         "Content-Type": "application/json"
     }
 
-    payload = {
-        "model": GROQ_MODEL,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_message}
-        ],
-        "temperature": 0.7,
-        "max_tokens": 1024
-    }
+    # Model Fallback Mechanism (Tries models until success)
+    models_to_test = [active_model] + [m for m in CANDIDATE_MODELS if m != active_model]
+    last_error = ""
 
-    try:
-        response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=25)
-        if response.status_code != 200:
-            err = response.json().get("error", {}).get("message", "API error")
-            return jsonify({"error": f"AI error: {err}"}), response.status_code
+    for model_name in models_to_test:
+        payload = {
+            "model": model_name,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            "temperature": 0.7,
+            "max_tokens": 1024
+        }
+        try:
+            response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=25)
+            if response.status_code == 200:
+                active_model = model_name
+                res_data = response.json()
+                ai_reply = res_data["choices"][0]["message"]["content"]
+                return jsonify({
+                    "reply": ai_reply,
+                    "response": ai_reply,
+                    "status": "success"
+                })
+            else:
+                last_error = response.json().get("error", {}).get("message", "API error")
+        except Exception as e:
+            last_error = str(e)
 
-        res_data = response.json()
-        ai_reply = res_data["choices"][0]["message"]["content"]
-
-        return jsonify({
-            "reply": ai_reply,
-            "response": ai_reply,
-            "status": "success"
-        })
-    except requests.exceptions.Timeout:
-        return jsonify({"error": "Request timed out. Please try again."}), 504
-    except Exception as e:
-        return jsonify({"error": f"Server error: {str(e)}"}), 500
+    return jsonify({"error": f"AI error: {last_error}"}), 500
 
 @app.route("/tts", methods=["POST"])
 @app.route("/api/tts", methods=["POST"])
