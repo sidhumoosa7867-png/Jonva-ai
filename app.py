@@ -28,7 +28,7 @@ def cleanup_old_audio():
 def home():
     return send_from_directory(".", "index.html")
 
-# Real AI Image Generation Route (State-of-the-Art Flux Engine)
+# Real AI Image Generation Route (Flux Engine - Gemini Quality)
 @app.route("/generate-image", methods=["POST"])
 @app.route("/api/generate-image", methods=["POST"])
 def generate_image():
@@ -42,7 +42,6 @@ def generate_image():
 
     encoded_prompt = urllib.parse.quote(prompt)
     seed = int(time.time() * 1000) % 999999
-    # Ultra-realistic Flux model image endpoint
     image_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&model=flux&nologo=true&seed={seed}"
     
     return jsonify({
@@ -64,7 +63,7 @@ def chat():
     if not user_message:
         return jsonify({"error": "Message cannot be empty."}), 400
 
-    # Auto-detect image generation requests
+    # Auto Image Generator Detection
     lower_msg = user_message.lower()
     img_triggers = ["generate image", "image of", "photo of", "picture of", "photo banao", "image banao", "tasveer", "draw "]
     if any(trigger in lower_msg for trigger in img_triggers):
@@ -76,7 +75,7 @@ def chat():
         seed = int(time.time() * 1000) % 999999
         img_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&model=flux&nologo=true&seed={seed}"
         return jsonify({
-            "reply": f"Maine aapki request ke anusaar image create kar di hai: '{clean_prompt}'",
+            "reply": f"Maine aapki request ke anusaar HD image create kar di hai: '{clean_prompt}'",
             "image_url": img_url,
             "status": "success"
         })
@@ -87,7 +86,7 @@ def chat():
 
     system_prompt = (
         "You are JONVA AI, a futuristic and highly intelligent AI assistant created by Gulfam. "
-        "You help users with AI tools, coding, creative ideas, homework, and technology. "
+        "You help users with AI tools, video editing, coding, creative writing, homework, and technology. "
         "Reply naturally in Hindi, English, or Hinglish with clean formatting, bullet points, and friendly emojis."
     )
 

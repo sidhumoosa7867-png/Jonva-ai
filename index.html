@@ -3,31 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>JONVA AI — Next-Gen AI Assistant</title>
+    <title>JONVA AI — Your Smart AI Assistant</title>
     
     <!-- Monetag Ads Integration (Preserved) -->
     <meta name="monetag" content="613fff50ec71829d78acf2e8b284c370">
     <script src="https://quqe5.com/88/tag.min.js" data-zone="293279" async data-cfasync="false"></script>
-    
-    <!-- Google Identity Services SDK (Preserved) -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-    <!-- Meta SEO -->
-    <meta name="description" content="JONVA AI - Futuristic voice and chat AI assistant.">
 
     <style>
         :root {
-            --bg-dark: #040814;
-            --bg-radial: radial-gradient(circle at 50% 25%, #0c1838 0%, #050b18 55%, #02050c 100%);
-            --glass-card: rgba(15, 23, 42, 0.65);
-            --glass-border: rgba(56, 189, 248, 0.18);
-            --cyan-glow: #00f2fe;
-            --cyan-sub: #4facfe;
-            --text-title: #f8fafc;
+            --bg-deep: #060919;
+            --bg-card: rgba(18, 24, 48, 0.75);
+            --border-glass: rgba(99, 102, 241, 0.22);
+            --accent-purple: #6366f1;
+            --accent-violet: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --user-bubble: #102a45;
-            --ai-bubble: rgba(15, 23, 42, 0.85);
-            --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            --user-bubble: #3730a3;
+            --ai-bubble: rgba(22, 29, 58, 0.9);
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body.light-mode {
+            --bg-deep: #f1f5f9;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --border-glass: rgba(99, 102, 241, 0.2);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --user-bubble: #6366f1;
+            --ai-bubble: #ffffff;
         }
 
         * {
@@ -38,19 +43,21 @@
         }
 
         body {
-            font-family: var(--font-family);
-            background: var(--bg-radial);
-            background-color: var(--bg-dark);
-            color: var(--text-title);
+            font-family: var(--font-stack);
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 50% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* Top Bar */
-        .top-navbar {
+        /* Top Bar (Exact Header from Photo) */
+        .top-bar {
             position: fixed;
             top: 0;
             left: 0;
@@ -60,417 +67,164 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 16px;
-            background: rgba(4, 8, 20, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(6, 9, 25, 0.85);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border-glass);
             z-index: 100;
         }
 
-        .avatar-btn {
-            width: 36px;
-            height: 36px;
+        .user-greeting-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar-img {
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            border: 2px solid var(--accent-purple);
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.85rem;
-            color: #040814;
-            cursor: pointer;
-            box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #fff;
+            font-size: 0.9rem;
         }
 
-        .project-selector {
+        .greeting-title {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: #ffffff;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #f1f5f9;
-            cursor: pointer;
-            padding: 6px 12px;
+            gap: 4px;
+        }
+
+        .greeting-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upgrade-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            padding: 5px 12px;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+            cursor: pointer;
+            border: none;
         }
 
-        .project-selector svg {
-            width: 14px;
-            height: 14px;
-            fill: #94a3b8;
-        }
-
-        .action-icon {
+        .circle-action-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-glass);
+            color: var(--text-main);
             width: 36px;
             height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #f1f5f9;
             cursor: pointer;
         }
 
-        /* Screen View Panels */
-        .screen-view {
+        /* Screen Views */
+        .app-view {
             flex: 1;
             margin-top: 60px;
-            margin-bottom: 80px;
+            margin-bottom: 74px;
+            padding: 14px 16px;
             display: none;
             flex-direction: column;
             overflow-y: auto;
-            padding: 12px 16px;
         }
 
-        .screen-view.active {
+        .app-view.active {
             display: flex;
         }
 
-        /* --- HOME SCREEN VIEW --- */
-        .hero-orb-section {
+        /* --- 1. HOME DASHBOARD (Panel 1 & 9) --- */
+        .cosmic-banner {
+            position: relative;
+            width: 100%;
+            min-height: 155px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #111836 0%, #1e1b4b 50%, #311042 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 24px 0 10px;
-            position: relative;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 16px;
         }
 
-        /* 3D Liquid Luminous Glowing Orb */
-        .orb-stage {
-            position: relative;
-            width: 170px;
-            height: 170px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .orb-outer-aura {
-            position: absolute;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 242, 254, 0.28) 0%, rgba(79, 172, 254, 0.12) 40%, transparent 70%);
-            filter: blur(25px);
-            animation: orb-breathe 4s ease-in-out infinite;
-        }
-
-        .orb-sphere {
-            position: relative;
-            width: 135px;
-            height: 135px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, #e0faff 0%, #00f2fe 22%, #0284c7 55%, #082f49 85%, #020b18 100%);
-            box-shadow: 
-                0 0 50px rgba(0, 242, 254, 0.65),
-                inset 0 0 35px rgba(255, 255, 255, 0.7),
-                inset -12px -12px 35px rgba(2, 6, 23, 0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: orb-float 3.5s ease-in-out infinite alternate;
-        }
-
-        .orb-sphere::after {
+        .cosmic-banner::before {
             content: '';
             position: absolute;
-            top: 14px;
-            left: 22px;
-            width: 45px;
-            height: 25px;
-            border-radius: 50%;
-            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.85) 0%, transparent 80%);
-            transform: rotate(-30deg);
-            filter: blur(1px);
+            inset: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-        .orb-sphere svg {
-            width: 38px;
-            height: 38px;
-            fill: #ffffff;
-            filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.8));
-            transition: transform 0.2s ease;
-        }
-
-        /* Orb State Classes */
-        .orb-stage.listening .orb-sphere {
-            transform: scale(1.15);
-            box-shadow: 0 0 70px #00f2fe, inset 0 0 45px #ffffff;
-            animation: orb-pulse 0.9s infinite alternate;
-        }
-
-        .orb-stage.processing .orb-sphere {
-            filter: hue-rotate(60deg) saturate(1.4);
-            animation: orb-spin-subtle 2s linear infinite;
-        }
-
-        .orb-stage.speaking .orb-sphere {
-            animation: orb-speak 0.65s infinite alternate ease-in-out;
-            box-shadow: 0 0 65px #00f5d4, 0 0 25px #00f2fe;
-        }
-
-        @keyframes orb-float {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-8px); }
-        }
-
-        @keyframes orb-breathe {
-            0%, 100% { opacity: 0.6; transform: scale(0.95); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
-
-        @keyframes orb-pulse {
-            from { transform: scale(1.08); }
-            to { transform: scale(1.22); }
-        }
-
-        @keyframes orb-speak {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.16); }
-        }
-
-        .hero-title {
-            margin-top: 18px;
-            font-size: 1.35rem;
-            font-weight: 700;
-            text-align: center;
-            background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+        .banner-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.55rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ffffff, #c7d2fe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-subtitle {
-            font-size: 0.84rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-            text-align: center;
+        .banner-sparkle {
+            font-size: 1.6rem;
+            filter: drop-shadow(0 0 10px #6366f1);
         }
 
-        .stop-pill-btn {
-            display: none;
-            margin: 8px auto 0;
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        /* Prompt Chips (Reference Style) */
-        .chips-scroll-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            margin: 18px 0 14px;
-        }
-
-        .prompt-chip {
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid var(--glass-border);
-            color: #e2e8f0;
-            padding: 8px 14px;
-            border-radius: 20px;
+        .banner-tagline {
             font-size: 0.8rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all 0.2s ease;
+            color: #a5b4fc;
+            letter-spacing: 2px;
+            margin-top: 6px;
+            text-transform: uppercase;
         }
 
-        .prompt-chip:active {
-            transform: scale(0.95);
-            background: rgba(0, 242, 254, 0.15);
-            border-color: var(--cyan-glow);
-        }
-
-        /* Discovery Section / Cards */
-        .section-header {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #f8fafc;
-            margin: 14px 0 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .discovery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .tool-card {
-            background: var(--glass-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 14px;
-            padding: 10px 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            cursor: pointer;
-            backdrop-filter: blur(12px);
-            transition: transform 0.2s ease;
-        }
-
-        .tool-card:active {
-            transform: scale(0.96);
-        }
-
-        .tool-thumb {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 8px;
-            font-size: 1.3rem;
-            background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.1));
-            border: 1px solid rgba(0, 242, 254, 0.3);
-        }
-
-        .tool-title {
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: #cbd5e1;
-            line-height: 1.2;
-        }
-
-        /* --- CHAT STREAM VIEW --- */
-        .chat-messages {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding-bottom: 24px;
-        }
-
-        .msg-bubble {
-            max-width: 88%;
-            padding: 12px 14px;
-            border-radius: 18px;
-            font-size: 0.92rem;
-            line-height: 1.5;
-            position: relative;
-            word-wrap: break-word;
-            animation: msgPop 0.25s ease-out forwards;
-        }
-
-        @keyframes msgPop {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .msg-user {
-            align-self: flex-end;
-            background: var(--user-bubble);
-            border: 1px solid rgba(0, 242, 254, 0.3);
-            color: #ffffff;
-            border-bottom-right-radius: 4px;
-        }
-
-        .msg-ai {
-            align-self: flex-start;
-            background: var(--ai-bubble);
-            border: 1px solid var(--glass-border);
-            color: #f1f5f9;
-            border-bottom-left-radius: 4px;
-            backdrop-filter: blur(14px);
-        }
-
-        .msg-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-            padding-top: 6px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .msg-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        pre {
-            background: #030712;
-            border: 1px solid var(--glass-border);
-            padding: 10px;
-            border-radius: 10px;
-            overflow-x: auto;
-            margin: 8px 0;
-            font-family: monospace;
-            font-size: 0.82rem;
-            color: #38bdf8;
-            position: relative;
-        }
-
-        .copy-code-btn {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
-            border: none;
-            padding: 2px 7px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            cursor: pointer;
-        }
-
-        /* Bottom Floating Input Dock */
-        .dock-container {
-            position: fixed;
-            bottom: 64px;
-            left: 0;
-            right: 0;
-            padding: 0 16px 8px;
-            z-index: 90;
-            display: flex;
-            justify-content: center;
-        }
-
-        .dock-input-pill {
+        /* Search Bar (Panel 1 & 9) */
+        .search-capsule {
             width: 100%;
-            max-width: 500px;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid var(--glass-border);
+            background: rgba(18, 24, 48, 0.85);
+            border: 1px solid var(--border-glass);
             border-radius: 30px;
-            padding: 6px 10px 6px 16px;
+            padding: 8px 12px 8px 18px;
             display: flex;
             align-items: center;
             gap: 10px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
-        .dock-input-pill input {
+        .search-capsule input {
             flex: 1;
             background: transparent;
             border: none;
@@ -479,50 +233,353 @@
             font-size: 0.94rem;
         }
 
-        .dock-input-pill input::placeholder {
+        .search-capsule input::placeholder {
             color: #64748b;
         }
 
-        .mic-inline-btn {
-            background: transparent;
+        .capsule-mic-btn {
+            background: none;
             border: none;
-            color: #94a3b8;
+            color: var(--accent-purple);
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 4px;
         }
 
-        .dock-send-btn {
+        .capsule-send-btn {
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #00f2fe, #0284c7);
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
             border: none;
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ffffff;
             cursor: pointer;
-            box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
         }
 
-        .dock-send-btn:active {
+        /* 8 Quick Tools Grid (Exact from Photo) */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px 8px;
+            margin-bottom: 22px;
+        }
+
+        .tool-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .tool-icon-box {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .tool-item:active .tool-icon-box {
             transform: scale(0.92);
+            border-color: var(--accent-purple);
         }
 
-        /* Bottom Navigation Bar (Tab Dock) */
-        .bottom-nav {
+        .tool-label {
+            font-size: 0.72rem;
+            color: #cbd5e1;
+            font-weight: 500;
+            line-height: 1.15;
+        }
+
+        /* Recent Projects Horizontal Carousel */
+        .section-row-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .section-row-header h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .section-row-header a {
+            font-size: 0.78rem;
+            color: var(--accent-purple);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .recent-scroll-row {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+
+        .recent-card {
+            min-width: 135px;
+            height: 100px;
+            border-radius: 14px;
+            background: linear-gradient(145deg, #131b38, #1c1945);
+            border: 1px solid var(--border-glass);
+            padding: 12px 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .recent-card-top {
+            font-size: 1.3rem;
+        }
+
+        .recent-card-title {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .recent-card-time {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* --- 2. CHAT SCREEN (Panel 2) --- */
+        .chat-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding-bottom: 85px;
+        }
+
+        .bubble {
+            max-width: 86%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            position: relative;
+            word-wrap: break-word;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bubble-user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: #ffffff;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+        }
+
+        .bubble-ai {
+            align-self: flex-start;
+            background: var(--ai-bubble);
+            border: 1px solid var(--border-glass);
+            color: #f1f5f9;
+            border-bottom-left-radius: 4px;
+            backdrop-filter: blur(14px);
+        }
+
+        .image-card-result {
+            margin-top: 10px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-glass);
+            background: #040814;
+        }
+
+        .image-card-result img {
+            width: 100%;
+            display: block;
+            max-height: 380px;
+            object-fit: cover;
+        }
+
+        .image-card-footer {
+            padding: 8px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(18, 24, 48, 0.9);
+        }
+
+        .download-img-btn {
+            background: var(--accent-purple);
+            color: #fff;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* --- 7. VOICE ASSISTANT SCREEN (Panel 7) --- */
+        .voice-stage-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 65vh;
+            text-align: center;
+        }
+
+        .voice-halo {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .voice-ring-pulse {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid rgba(99, 102, 241, 0.4);
+            animation: haloPulse 3s infinite ease-out;
+        }
+
+        @keyframes haloPulse {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        .voice-core-sphere {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #818cf8 0%, #4f46e5 60%, #1e1b4b 100%);
+            box-shadow: 0 0 45px rgba(99, 102, 241, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        .voice-core-sphere svg {
+            width: 44px;
+            height: 44px;
+            fill: #ffffff;
+        }
+
+        .voice-wave-bars {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            height: 36px;
+            margin-top: 24px;
+        }
+
+        .wave-bar {
+            width: 4px;
+            height: 10px;
+            background: var(--accent-purple);
+            border-radius: 2px;
+            animation: soundWave 1.2s infinite ease-in-out alternate;
+        }
+
+        .wave-bar:nth-child(2) { animation-delay: 0.15s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.3s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.45s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.6s; }
+
+        @keyframes soundWave {
+            0% { height: 6px; }
+            100% { height: 32px; background: #06b6d4; }
+        }
+
+        /* --- 8. SETTINGS SCREEN (Panel 8) --- */
+        .settings-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .settings-card h4 {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            color: #f1f5f9;
+        }
+
+        .theme-select-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-box-opt {
+            flex: 1;
+            padding: 12px 8px;
+            border-radius: 10px;
+            border: 1px solid var(--border-glass);
+            text-align: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .theme-box-opt.selected {
+            border-color: var(--accent-purple);
+            background: rgba(99, 102, 241, 0.15);
+        }
+
+        .color-dot-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .color-dot.active {
+            border-color: #fff;
+        }
+
+        /* Bottom Fixed Navigation Dock (Panel 9) */
+        .bottom-dock {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             height: 64px;
-            background: rgba(4, 8, 20, 0.88);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            background: rgba(6, 9, 25, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-glass);
             display: flex;
             align-items: center;
             justify-content: space-around;
@@ -530,7 +587,7 @@
             z-index: 100;
         }
 
-        .nav-tab {
+        .dock-tab {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -540,10 +597,10 @@
             color: #64748b;
             font-size: 0.72rem;
             cursor: pointer;
-            transition: color 0.2s ease;
+            transition: color 0.2s;
         }
 
-        .nav-tab svg {
+        .dock-tab svg {
             width: 22px;
             height: 22px;
             stroke: currentColor;
@@ -551,94 +608,15 @@
             stroke-width: 2;
         }
 
-        .nav-tab.active {
-            color: var(--cyan-glow);
+        .dock-tab.active {
+            color: var(--accent-purple);
         }
 
-        /* Typing Dots */
-        .typing-bubble {
-            display: inline-flex;
-            gap: 4px;
-            align-items: center;
-            padding: 6px 10px;
-        }
-        .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--cyan-glow);
-            animation: dotBounce 1.4s infinite ease-in-out both;
-        }
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes dotBounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
-
-        /* Side History Drawer */
-        .drawer-overlay {
+        /* Modal for Image Generator Prompt */
+        .img-modal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 150;
-            display: none;
-        }
-
-        .drawer {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: -290px;
-            width: 280px;
-            background: #040814;
-            border-right: 1px solid var(--glass-border);
-            z-index: 160;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            transition: left 0.3s ease;
-        }
-
-        .drawer.open {
-            left: 0;
-        }
-
-        .new-chat-action {
-            background: linear-gradient(135deg, #00f2fe, #0284c7);
-            color: #ffffff;
-            border: none;
-            padding: 10px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 14px;
-        }
-
-        .history-list {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .history-item {
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 8px;
-            font-size: 0.84rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        /* Settings Modal */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.75);
+            background: rgba(0,0,0,0.8);
             display: none;
             align-items: center;
             justify-content: center;
@@ -646,427 +624,446 @@
             padding: 16px;
         }
 
-        .modal-box {
-            background: #081124;
-            border: 1px solid var(--glass-border);
+        .img-modal-box {
+            background: #0d122b;
+            border: 1px solid var(--border-glass);
             width: 100%;
-            max-width: 360px;
-            border-radius: 20px;
-            padding: 20px;
+            max-width: 380px;
+            border-radius: 18px;
+            padding: 18px;
+        }
+
+        .img-modal-box textarea {
+            width: 100%;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            color: #ffffff;
+            padding: 10px;
+            outline: none;
+            font-family: inherit;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Navigation Bar -->
-    <header class="top-navbar">
-        <div class="avatar-btn" id="openSettingsBtn" title="अकाउंट व सेटिंग्स">J</div>
-        <div class="project-selector" id="projectSelectorBtn">
-            <span>JONVA AI</span>
-            <svg viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+    <!-- Header Top Bar (Panel 1 & 9) -->
+    <header class="top-bar">
+        <div class="user-greeting-box">
+            <div class="avatar-img">G</div>
+            <div>
+                <div class="greeting-title">Hello, Gulfam 🌟</div>
+                <div class="greeting-sub">Your ideas, our AI power 🚀</div>
+            </div>
         </div>
-        <button class="action-icon" id="openHistoryBtn" title="हिस्ट्री">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        </button>
+        <div class="top-actions">
+            <button class="upgrade-badge">👑 Upgrade</button>
+            <div class="circle-action-btn" onclick="switchNav('settings')" title="सेटिंग्स">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
+        </div>
     </header>
 
-    <!-- VIEW 1: HOME SCREEN (Reference Design) -->
-    <section class="screen-view active" id="homeView">
-        <div class="hero-orb-section">
-            <div class="orb-stage" id="orbBtn">
-                <div class="orb-outer-aura"></div>
-                <div class="orb-sphere">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                    </svg>
-                </div>
+    <!-- VIEW 1: HOME DASHBOARD (Panel 1 & 9) -->
+    <main class="app-view active" id="viewHome">
+        <!-- Cosmic Landscape Hero Banner -->
+        <div class="cosmic-banner">
+            <div class="banner-logo">
+                <span class="banner-sparkle">✦</span>
+                <span>JONOVA AI</span>
             </div>
-            <h2 class="hero-title">How can I help you today?</h2>
-            <p class="hero-subtitle" id="orbStatusLabel">टैप करके बोलें या नीचे चुनें</p>
-            <button class="stop-pill-btn" id="stopSpeechBtn">⏹ आवाज़ रोकें (Stop)</button>
+            <div class="banner-tagline">Think · Create · Explore</div>
         </div>
 
-        <!-- Prompt Chips (Matches Reference Mockup) -->
-        <div class="chips-scroll-container">
-            <button class="prompt-chip" onclick="quickPrompt('🎨 मुझे एक बेहतरीन फ़ोटो या 3D आर्ट का प्रॉम्प्ट लिखकर दो')">🎨 Image prompt</button>
-            <button class="prompt-chip" onclick="quickPrompt('🔍 डीप रिसर्च करो और आसान भाषा में समझाओ: ')">🔍 Deep research</button>
-            <button class="prompt-chip" onclick="quickPrompt('⚡ एक साफ़ और तेज़ Python/HTML कोड लिखकर दो: ')">⚡ Code assist</button>
-            <button class="prompt-chip" onclick="quickPrompt('🌐 इसका हिंदी से अंग्रेज़ी में अनुवाद करो: ')">🌐 Translate</button>
-            <button class="prompt-chip" onclick="quickPrompt('📚 इस सवाल को आसान तरीक़े से समझाओ: ')">📚 Homework</button>
-        </div>
-
-        <!-- Discover AI Tools Grid -->
-        <div class="section-header">
-            <span>Discover AI Tools</span>
-        </div>
-        <div class="discovery-grid">
-            <div class="tool-card" onclick="quickPrompt('रोमांचक कहानी या शायरी सुनाओ')">
-                <div class="tool-thumb">✨</div>
-                <div class="tool-title">Creative Story</div>
-            </div>
-            <div class="tool-card" onclick="quickPrompt('आज के टॉप टेक्नोलॉजी ट्रेंड्स क्या हैं?')">
-                <div class="tool-thumb">🚀</div>
-                <div class="tool-title">Tech Trends</div>
-            </div>
-            <div class="tool-card" onclick="quickPrompt('एक आकर्षक बिजनेस आइडिया बताओ')">
-                <div class="tool-thumb">💡</div>
-                <div class="tool-title">Ideas</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- VIEW 2: SMART CHAT SCREEN -->
-    <section class="screen-view" id="chatView">
-        <div class="chat-messages" id="chatContainer">
-            <div class="msg-bubble msg-ai">
-                नमस्ते! मैं <b>JONVA AI</b> हूँ। आप बोलकर या लिखकर कुछ भी पूछ सकते हैं।
-            </div>
-        </div>
-    </section>
-
-    <!-- Floating Input Dock -->
-    <div class="dock-container">
-        <div class="dock-input-pill">
-            <button class="mic-inline-btn" id="dockMicBtn" title="माइक">
+        <!-- Universal Search Capsule -->
+        <div class="search-capsule">
+            <button class="capsule-mic-btn" onclick="switchNav('voice')" title="माइक">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
             </button>
-            <input type="text" id="mainInput" placeholder="Ask me anything..." autocomplete="off">
-            <button class="dock-send-btn" id="dockSendBtn" title="भेजें">
+            <input type="text" id="homeSearchInput" placeholder="Ask anything... (text or voice)">
+            <button class="capsule-send-btn" onclick="handleHomeSearch()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
             </button>
         </div>
-    </div>
 
-    <!-- Bottom Navigation Bar (Tab Dock) -->
-    <nav class="bottom-nav">
-        <button class="nav-tab active" id="tabHome" onclick="switchTab('home')">
+        <!-- 8 AI Quick Tools Grid (Exact from Photo) -->
+        <div class="tools-grid">
+            <div class="tool-item" onclick="switchNav('chat')">
+                <div class="tool-icon-box">💬</div>
+                <div class="tool-label">Smart Chat</div>
+            </div>
+            <div class="tool-item" onclick="openImageModal()">
+                <div class="tool-icon-box" style="border-color:#8b5cf6;">🎨</div>
+                <div class="tool-label">AI Image Gen</div>
+            </div>
+            <div class="tool-item" onclick="switchNav('voice')">
+                <div class="tool-icon-box" style="border-color:#06b6d4;">🎙️</div>
+                <div class="tool-label">Voice Assistant</div>
+            </div>
+            <div class="tool-item" onclick="triggerFastQuery('Video editing ke liye best cinematic effects aur tips batao')">
+                <div class="tool-icon-box">🎬</div>
+                <div class="tool-label">Video Editor</div>
+            </div>
+            <div class="tool-item" onclick="triggerFastQuery('Latest AI research models aur tools ki list do')">
+                <div class="tool-icon-box">🧪</div>
+                <div class="tool-label">AI Lab</div>
+            </div>
+            <div class="tool-item" onclick="triggerFastQuery('Aaj ke trending tech news updates kya hain?')">
+                <div class="tool-icon-box">🔍</div>
+                <div class="tool-label">Web Search</div>
+            </div>
+            <div class="tool-item" onclick="triggerFastQuery('Kisi bhi document ya PDF ko summarize karne ka tarika')">
+                <div class="tool-icon-box">📄</div>
+                <div class="tool-label">Doc Reader</div>
+            </div>
+            <div class="tool-item" onclick="switchNav('tools')">
+                <div class="tool-icon-box">⚡</div>
+                <div class="tool-label">More Tools</div>
+            </div>
+        </div>
+
+        <!-- Recent Projects Horizontal Carousel -->
+        <div class="section-row-header">
+            <h3>Recent Projects</h3>
+            <a onclick="switchNav('chat')">View All</a>
+        </div>
+        <div class="recent-scroll-row">
+            <div class="recent-card" onclick="triggerFastQuery('Cinematic video effects kaise add karein?')">
+                <div class="recent-card-top">🎬</div>
+                <div>
+                    <div class="recent-card-title">My AI Video</div>
+                    <div class="recent-card-time">2 min ago</div>
+                </div>
+            </div>
+            <div class="recent-card" onclick="switchNav('chat')">
+                <div class="recent-card-top">💬</div>
+                <div>
+                    <div class="recent-card-title">Chat with AI</div>
+                    <div class="recent-card-time">10 min ago</div>
+                </div>
+            </div>
+            <div class="recent-card" onclick="openImageModal()">
+                <div class="recent-card-top">🖼️</div>
+                <div>
+                    <div class="recent-card-title">Image Creation</div>
+                    <div class="recent-card-time">1 hour ago</div>
+                </div>
+            </div>
+            <div class="recent-card" onclick="switchNav('voice')">
+                <div class="recent-card-top">🎙️</div>
+                <div>
+                    <div class="recent-card-title">Voice Note</div>
+                    <div class="recent-card-time">2 hours ago</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- VIEW 2: CHAT INTERFACE (Panel 2) -->
+    <main class="app-view" id="viewChat">
+        <div class="chat-flow" id="chatThread">
+            <div class="bubble bubble-ai">
+                ✦ <b>JONVA AI</b>: Hello Gulfam! Main aapka smart AI assistant hoon. Aap mujhse koi bhi sawal pooch sakte hain ya <b>AI Photo</b> generate karne ko bol sakte hain!
+            </div>
+        </div>
+        <div style="position:fixed; bottom:64px; left:0; right:0; padding:10px 16px; background:rgba(6,9,25,0.95); border-top:1px solid var(--border-glass);">
+            <div class="search-capsule" style="margin-bottom:0;">
+                <input type="text" id="chatInputField" placeholder="Type a message or 'Generate image of...'">
+                <button class="capsule-send-btn" onclick="sendChatMessage()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- VIEW 3: VOICE ASSISTANT (Panel 7) -->
+    <main class="app-view" id="viewVoice">
+        <div class="voice-stage-container">
+            <div class="voice-halo" id="voiceHaloBtn">
+                <div class="voice-ring-pulse"></div>
+                <div class="voice-core-sphere" id="voiceCore">
+                    <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                </div>
+            </div>
+            <h2 style="margin-top:22px; font-size:1.3rem;" id="voiceStatusText">Listening...</h2>
+            <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Speak now, I'm here to help</p>
+            <div class="voice-wave-bars">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- VIEW 4: TOOLS DIRECTORY (Panel 4) -->
+    <main class="app-view" id="viewTools">
+        <h3 style="margin-bottom:14px;">Explore AI Tools</h3>
+        <div class="tools-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="tool-item" onclick="openImageModal()">
+                <div class="tool-icon-box">🎨</div>
+                <div class="tool-label">Image Generator</div>
+            </div>
+            <div class="tool-item" onclick="triggerFastQuery('Code helper mode active: Mujhse coding questions poochiye')">
+                <div class="tool-icon-box">💻</div>
+                <div class="tool-label">Code Helper</div>
+            </div>
+            <div class="tool-item" onclick="triggerFastQuery('Article ya paragraph summary tool')">
+                <div class="tool-icon-box">📑</div>
+                <div class="tool-label">Summarizer</div>
+            </div>
+            <div class="tool-item" onclick="triggerFastQuery('Universal Language Translator active')">
+                <div class="tool-icon-box">🌐</div>
+                <div class="tool-label">Translator</div>
+            </div>
+            <div class="tool-item" onclick="triggerFastQuery('Math problem solving helper')">
+                <div class="tool-icon-box">🧮</div>
+                <div class="tool-label">Math Reader</div>
+            </div>
+            <div class="tool-item" onclick="triggerFastQuery('Professional AI Copywriter & Storyteller')">
+                <div class="tool-icon-box">✍️</div>
+                <div class="tool-label">AI Writer</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- VIEW 5: SETTINGS & APPEARANCE (Panel 8) -->
+    <main class="app-view" id="viewSettings">
+        <div class="settings-card">
+            <h4>Appearance</h4>
+            <div class="theme-select-row">
+                <div class="theme-box-opt selected" id="optDark" onclick="setTheme('dark')">🌙 Dark</div>
+                <div class="theme-box-opt" id="optLight" onclick="setTheme('light')">☀️ Light</div>
+            </div>
+            <div style="margin-top:14px; font-size:0.82rem; color:#94a3b8;">Accent Color</div>
+            <div class="color-dot-row">
+                <div class="color-dot active" style="background:#6366f1;"></div>
+                <div class="color-dot" style="background:#3b82f6;"></div>
+                <div class="color-dot" style="background:#8b5cf6;"></div>
+                <div class="color-dot" style="background:#06b6d4;"></div>
+                <div class="color-dot" style="background:#ec4899;"></div>
+            </div>
+        </div>
+        <div class="settings-card">
+            <h4>Account & Preferences</h4>
+            <div style="font-size:0.86rem; color:#cbd5e1; margin-bottom:8px;">User: <b>Gulfam (Free Plan)</b></div>
+            <div style="font-size:0.82rem; color:#94a3b8;">Language: English & Hindi (India)</div>
+        </div>
+    </main>
+
+    <!-- Bottom Mobile Dock (Panel 9) -->
+    <nav class="bottom-dock">
+        <button class="dock-tab active" id="tabHome" onclick="switchNav('home')">
             <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
             <span>Home</span>
         </button>
-        <button class="nav-tab" id="tabChat" onclick="switchTab('chat')">
+        <button class="dock-tab" id="tabChat" onclick="switchNav('chat')">
             <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             <span>Chat</span>
         </button>
-        <button class="nav-tab" id="tabHistory" onclick="toggleDrawer()">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span>History</span>
+        <button class="dock-tab" id="tabVoice" onclick="switchNav('voice')">
+            <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+            <span>Voice</span>
         </button>
-        <button class="nav-tab" id="tabSettings" onclick="openSettingsModal()">
+        <button class="dock-tab" id="tabTools" onclick="switchNav('tools')">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span>Tools</span>
+        </button>
+        <button class="dock-tab" id="tabSettings" onclick="switchNav('settings')">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             <span>Profile</span>
         </button>
     </nav>
 
-    <!-- Side History Drawer -->
-    <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
-    <div class="drawer" id="historyDrawer">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-            <h3>चैट हिस्ट्री</h3>
-            <button class="action-icon" onclick="toggleDrawer()">&times;</button>
-        </div>
-        <button class="new-chat-action" onclick="startNewChat()">+ New Chat</button>
-        <div class="history-list" id="historyList"></div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-box">
-            <h3 style="margin-bottom:14px;">Settings & Account</h3>
-            <div style="margin-bottom:14px;">
-                <label style="font-size:0.85rem; color:#94a3b8; display:block; margin-bottom:6px;">वॉयस भाषा</label>
-                <select id="voiceLang" style="width:100%; padding:8px; border-radius:8px; background:#040814; color:#fff; border:1px solid var(--glass-border);">
-                    <option value="hi-IN">हिंदी (India)</option>
-                    <option value="en-IN">English (India)</option>
-                    <option value="en-US">English (US)</option>
-                </select>
+    <!-- AI Image Generator Modal -->
+    <div class="img-modal" id="imageModal">
+        <div class="img-modal-box">
+            <h3 style="font-size:1.1rem; color:#fff;">🎨 AI Image Generator</h3>
+            <p style="font-size:0.78rem; color:#94a3b8; margin-top:4px;">Aap jo chahein likhein, AI photo create karega:</p>
+            <textarea id="imgPromptInput" placeholder="Jaise: A cyberpunk tiger in a neon Tokyo street, 8k resolution, cinematic lighting..."></textarea>
+            <div style="display:flex; justify-content:flex-end; gap:8px;">
+                <button onclick="closeImageModal()" style="background:transparent; border:1px solid #64748b; color:#cbd5e1; padding:6px 14px; border-radius:8px;">Cancel</button>
+                <button onclick="submitImageGen()" style="background:linear-gradient(135deg, #6366f1, #3b82f6); border:none; color:#fff; padding:6px 16px; border-radius:8px; font-weight:600;">Generate Art ⚡</button>
             </div>
-            <!-- Google Sign-In Container (Preserved) -->
-            <div style="margin-bottom:16px;">
-                <div id="g_id_onload" data-auto_prompt="false"></div>
-                <div class="g_id_signin" data-type="standard" data-size="medium" data-theme="filled_blue"></div>
-            </div>
-            <button class="action-icon" style="width:100%; border-radius:10px;" onclick="closeSettingsModal()">Close</button>
         </div>
     </div>
 
     <script>
-        /* State Variables */
-        let currentTab = 'home';
-        let isListening = false;
-        let isProcessing = false;
-        let currentAudio = null;
-        let recognition = null;
-        let activeChatId = null;
-        let chatSessions = {};
+        /* Navigation Controller */
+        function switchNav(viewName) {
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.dock-tab').forEach(t => t.classList.remove('active'));
 
-        try {
-            chatSessions = JSON.parse(localStorage.getItem('jonva_chats') || '{}');
-        } catch(e) { chatSessions = {}; }
-
-        const homeView = document.getElementById('homeView');
-        const chatView = document.getElementById('chatView');
-        const chatContainer = document.getElementById('chatContainer');
-        const orbBtn = document.getElementById('orbBtn');
-        const orbStatusLabel = document.getElementById('orbStatusLabel');
-        const stopSpeechBtn = document.getElementById('stopSpeechBtn');
-        const mainInput = document.getElementById('mainInput');
-        const dockSendBtn = document.getElementById('dockSendBtn');
-        const dockMicBtn = document.getElementById('dockMicBtn');
-        const historyDrawer = document.getElementById('historyDrawer');
-        const drawerOverlay = document.getElementById('drawerOverlay');
-
-        /* Tab Switcher */
-        function switchTab(tab) {
-            currentTab = tab;
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            if (tab === 'home') {
-                homeView.classList.add('active');
-                chatView.classList.remove('active');
+            if (viewName === 'home') {
+                document.getElementById('viewHome').classList.add('active');
                 document.getElementById('tabHome').classList.add('active');
-            } else {
-                homeView.classList.remove('active');
-                chatView.classList.add('active');
+            } else if (viewName === 'chat') {
+                document.getElementById('viewChat').classList.add('active');
                 document.getElementById('tabChat').classList.add('active');
+            } else if (viewName === 'voice') {
+                document.getElementById('viewVoice').classList.add('active');
+                document.getElementById('tabVoice').classList.add('active');
+                startVoiceEngine();
+            } else if (viewName === 'tools') {
+                document.getElementById('viewTools').classList.add('active');
+                document.getElementById('tabTools').classList.add('active');
+            } else if (viewName === 'settings') {
+                document.getElementById('viewSettings').classList.add('active');
+                document.getElementById('tabSettings').classList.add('active');
             }
         }
 
-        /* Drawer & Modals */
-        function toggleDrawer() {
-            const isOpen = historyDrawer.classList.contains('open');
-            if (isOpen) {
-                historyDrawer.classList.remove('open');
-                drawerOverlay.style.display = 'none';
-            } else {
-                renderHistory();
-                historyDrawer.classList.add('open');
-                drawerOverlay.style.display = 'block';
-            }
-        }
-        document.getElementById('openHistoryBtn').onclick = toggleDrawer;
+        /* Image Modal */
+        function openImageModal() { document.getElementById('imageModal').style.display = 'flex'; }
+        function closeImageModal() { document.getElementById('imageModal').style.display = 'none'; }
 
-        function openSettingsModal() { document.getElementById('settingsModal').style.display = 'flex'; }
-        function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
-        document.getElementById('openSettingsBtn').onclick = openSettingsModal;
+        async function submitImageGen() {
+            const prompt = document.getElementById('imgPromptInput').value.trim();
+            if (!prompt) return;
+            closeImageModal();
+            switchNav('chat');
+            addBubble('user', `🎨 Generate Image: "${prompt}"`);
 
-        /* Orb State Handler */
-        function setOrbState(state, label) {
-            orbBtn.className = 'orb-stage ' + state;
-            orbStatusLabel.innerText = label;
-            stopSpeechBtn.style.display = (state === 'speaking') ? 'inline-block' : 'none';
-        }
-
-        stopSpeechBtn.onclick = () => {
-            if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
-            setOrbState('idle', 'टैप करके बोलें या नीचे चुनें');
-        };
-
-        /* Speech Recognition Setup */
-        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (SpeechRec) {
-            recognition = new SpeechRec();
-            recognition.continuous = false;
-            recognition.interimResults = false;
-
-            recognition.onstart = () => {
-                isListening = true;
-                setOrbState('listening', 'सुन रहा हूँ... बोलिए');
-            };
-            recognition.onresult = (e) => {
-                const text = e.results[0][0].transcript;
-                if (text) sendPrompt(text);
-            };
-            recognition.onerror = (e) => {
-                isListening = false;
-                setOrbState('error', 'माइक एरर: अनुमति दें');
-                setTimeout(() => setOrbState('idle', 'टैप करके बोलें या नीचे चुनें'), 2500);
-            };
-            recognition.onend = () => {
-                isListening = false;
-                if (!isProcessing) setOrbState('idle', 'टैप करके बोलें या नीचे चुनें');
-            };
-        }
-
-        function triggerVoice() {
-            if (isProcessing) return;
-            if (currentAudio && !currentAudio.paused) currentAudio.pause();
-            if (!SpeechRec) {
-                alert('कृपया Google Chrome में वॉयस का इस्तेमाल करें।');
-                return;
-            }
-            if (isListening) {
-                recognition.stop();
-            } else {
-                recognition.lang = document.getElementById('voiceLang').value;
-                try { recognition.start(); } catch(err) { recognition.stop(); }
-            }
-        }
-        orbBtn.onclick = triggerVoice;
-        dockMicBtn.onclick = triggerVoice;
-
-        /* Quick Prompt handler */
-        window.quickPrompt = (txt) => {
-            mainInput.value = txt;
-            mainInput.focus();
-        };
-
-        /* Markdown & Sanitization */
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-        function parseMarkdown(text) {
-            let str = escapeHtml(text);
-            str = str.replace(/```([\s\S]*?)```/g, (m, c) => `<pre><button class="copy-code-btn" onclick="copyCode(this)">Copy</button><code>${c.trim()}</code></pre>`);
-            str = str.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-            return str.replace(/\n/g, '<br>');
-        }
-
-        window.copyCode = (btn) => {
-            navigator.clipboard.writeText(btn.nextElementSibling.innerText);
-            btn.innerText = 'Copied!';
-            setTimeout(() => btn.innerText = 'Copy', 1500);
-        };
-
-        function addMessage(sender, text) {
-            const bubble = document.createElement('div');
-            bubble.className = `msg-bubble msg-${sender}`;
-            if (sender === 'ai') {
-                bubble.innerHTML = parseMarkdown(text) + `
-                    <div class="msg-actions">
-                        <button class="msg-btn" onclick="navigator.clipboard.writeText('${encodeURIComponent(text)}'); alert('कॉपी हो गया!');">📋 कॉपी</button>
-                        <button class="msg-btn" onclick="playVoice('${encodeURIComponent(text)}')">🔊 सुनें</button>
-                    </div>
-                `;
-            } else {
-                bubble.innerText = text;
-            }
-            chatContainer.appendChild(bubble);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-            return bubble;
-        }
-
-        /* Edge-TTS Playback */
-        window.playVoice = async (encoded) => {
-            const text = decodeURIComponent(encoded);
-            if (currentAudio) currentAudio.pause();
-            setOrbState('speaking', 'बोल रहा हूँ...');
+            const loadingBubble = addBubble('ai', '⏳ AI Image render ho rahi hai, kripya 3-4 second intezar karein...');
 
             try {
-                const res = await fetch('/tts', {
+                const res = await fetch('/generate-image', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: text, voice: document.getElementById('voiceLang').value === 'hi-IN' ? 'hi-IN-SwaraNeural' : 'en-IN-NeerjaNeural' })
+                    body: JSON.stringify({ prompt: prompt })
                 });
-                if (!res.ok) throw new Error();
-                const blob = await res.blob();
-                currentAudio = new Audio(URL.createObjectURL(blob));
-                currentAudio.onended = () => setOrbState('idle', 'टैप करके बोलें या नीचे चुनें');
-                currentAudio.onerror = () => setOrbState('idle', 'टैप करके बोलें या नीचे चुनें');
-                currentAudio.play();
+                const data = await res.json();
+                loadingBubble.remove();
+
+                if (data.image_url) {
+                    const aiBubble = document.createElement('div');
+                    aiBubble.className = 'bubble bubble-ai';
+                    aiBubble.innerHTML = `
+                        <div>✦ <b>JONVA AI</b>: Aapka image ready hai:</div>
+                        <div class="image-card-result">
+                            <img src="${data.image_url}" alt="${prompt}" loading="lazy">
+                            <div class="image-card-footer">
+                                <span style="font-size:0.75rem; color:#94a3b8;">Flux Engine 1024x1024</span>
+                                <a href="${data.image_url}" target="_blank" download="jonva_ai.jpg" class="download-img-btn">⬇ Download</a>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('chatThread').appendChild(aiBubble);
+                    window.scrollTo(0, document.body.scrollHeight);
+                }
             } catch(e) {
-                setOrbState('idle', 'टैप करके बोलें या नीचे चुनें');
+                loadingBubble.innerText = '⚠️ Image generate karne me samasya aayi.';
             }
-        };
+        }
 
-        /* Send Message & Query */
-        async function sendPrompt(text) {
-            if (!text.trim() || isProcessing) return;
-            switchTab('chat'); // Switch to Chat view on message
-            addMessage('user', text);
-            mainInput.value = '';
-            isProcessing = true;
-            setOrbState('processing', 'प्रोसेस हो रहा है...');
+        /* Chat System */
+        function addBubble(type, text) {
+            const b = document.createElement('div');
+            b.className = `bubble bubble-${type}`;
+            b.innerText = text;
+            document.getElementById('chatThread').appendChild(b);
+            window.scrollTo(0, document.body.scrollHeight);
+            return b;
+        }
 
-            const typing = document.createElement('div');
-            typing.className = 'msg-bubble msg-ai';
-            typing.innerHTML = '<div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
-            chatContainer.appendChild(typing);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+        function triggerFastQuery(query) {
+            switchNav('chat');
+            document.getElementById('chatInputField').value = query;
+            sendChatMessage();
+        }
+
+        function handleHomeSearch() {
+            const txt = document.getElementById('homeSearchInput').value.trim();
+            if (!txt) return;
+            switchNav('chat');
+            document.getElementById('chatInputField').value = txt;
+            document.getElementById('homeSearchInput').value = '';
+            sendChatMessage();
+        }
+
+        async function sendChatMessage() {
+            const field = document.getElementById('chatInputField');
+            const msg = field.value.trim();
+            if (!msg) return;
+            field.value = '';
+
+            addBubble('user', msg);
+            const thinking = addBubble('ai', '✦ JONVA AI soch raha hai...');
 
             try {
                 const res = await fetch('/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text })
+                    body: JSON.stringify({ message: msg })
                 });
-                chatContainer.removeChild(typing);
-
-                if (!res.ok) throw new Error('सर्वर से जवाब नहीं मिला');
                 const data = await res.json();
-                const aiReply = data.reply || data.response || 'कोई उत्तर नहीं मिला।';
-                addMessage('ai', aiReply);
-                saveChat(text, aiReply);
-                playVoice(encodeURIComponent(aiReply));
-            } catch(err) {
-                if (typing.parentNode) chatContainer.removeChild(typing);
-                addMessage('ai', '⚠️ क्षमा करें, संपर्क नहीं हो सका। कृपया पुनः प्रयास करें।');
-                setOrbState('error', 'एरर आया');
-                setTimeout(() => setOrbState('idle', 'टैप करके बोलें या नीचे चुनें'), 2500);
-            } finally {
-                isProcessing = false;
+                thinking.remove();
+
+                if (data.image_url) {
+                    const aiBubble = document.createElement('div');
+                    aiBubble.className = 'bubble bubble-ai';
+                    aiBubble.innerHTML = `
+                        <div>✦ <b>JONVA AI</b>: ${data.reply}</div>
+                        <div class="image-card-result">
+                            <img src="${data.image_url}" alt="AI generated">
+                            <div class="image-card-footer">
+                                <span style="font-size:0.75rem; color:#94a3b8;">Flux AI Image</span>
+                                <a href="${data.image_url}" target="_blank" class="download-img-btn">⬇ Download</a>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('chatThread').appendChild(aiBubble);
+                } else {
+                    addBubble('ai', data.reply || data.response || 'Jawab prapt nahi hua.');
+                }
+            } catch(e) {
+                thinking.innerText = '⚠️ Server se sampark nahi ho saka.';
             }
         }
 
-        dockSendBtn.onclick = () => sendPrompt(mainInput.value);
-        mainInput.onkeydown = (e) => { if (e.key === 'Enter') sendPrompt(mainInput.value); };
-
-        /* LocalStorage Chat Management */
-        function saveChat(u, a) {
-            if (!activeChatId) {
-                activeChatId = 'chat_' + Date.now();
-                chatSessions[activeChatId] = {
-                    id: activeChatId,
-                    title: u.substring(0, 22) + (u.length > 22 ? '...' : ''),
-                    messages: []
-                };
-            }
-            chatSessions[activeChatId].messages.push({ sender: 'user', text: u });
-            chatSessions[activeChatId].messages.push({ sender: 'ai', text: a });
-            localStorage.setItem('jonva_chats', JSON.stringify(chatSessions));
+        /* Voice Assistant Engine */
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        if (SpeechRec) {
+            recognition = new SpeechRec();
+            recognition.continuous = false;
+            recognition.onresult = (e) => {
+                const heard = e.results[0][0].transcript;
+                if (heard) {
+                    switchNav('chat');
+                    document.getElementById('chatInputField').value = heard;
+                    sendChatMessage();
+                }
+            };
+            recognition.onend = () => {
+                document.getElementById('voiceStatusText').innerText = 'Tap to speak';
+            };
         }
 
-        function renderHistory() {
-            const list = document.getElementById('historyList');
-            list.innerHTML = '';
-            const ids = Object.keys(chatSessions).reverse();
-            if (!ids.length) {
-                list.innerHTML = '<div style="color:#64748b; font-size:0.85rem; padding:10px;">कोई चैट सेव नहीं है।</div>';
-                return;
-            }
-            ids.forEach(id => {
-                const item = document.createElement('div');
-                item.className = 'history-item';
-                item.innerHTML = `
-                    <span onclick="openSession('${id}')" style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(chatSessions[id].title)}</span>
-                    <button onclick="delSession('${id}', event)" style="background:none; border:none; color:#ef4444; cursor:pointer;">🗑</button>
-                `;
-                list.appendChild(item);
-            });
+        function startVoiceEngine() {
+            if (!recognition) return;
+            try {
+                document.getElementById('voiceStatusText').innerText = 'Listening... Speak now';
+                recognition.start();
+            } catch(e) {}
         }
+        document.getElementById('voiceHaloBtn').onclick = startVoiceEngine;
 
-        window.openSession = (id) => {
-            activeChatId = id;
-            chatContainer.innerHTML = '';
-            chatSessions[id].messages.forEach(m => addMessage(m.sender, m.text));
-            toggleDrawer();
-            switchTab('chat');
-        };
-
-        window.delSession = (id, e) => {
-            e.stopPropagation();
-            if (confirm('यह चैट हटाना चाहते हैं?')) {
-                delete chatSessions[id];
-                localStorage.setItem('jonva_chats', JSON.stringify(chatSessions));
-                renderHistory();
+        /* Theme Settings */
+        function setTheme(t) {
+            if (t === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('optLight').classList.add('selected');
+                document.getElementById('optDark').classList.remove('selected');
+            } else {
+                document.body.classList.remove('light-mode');
+                document.getElementById('optDark').classList.add('selected');
+                document.getElementById('optLight').classList.remove('selected');
             }
-        };
-
-        window.startNewChat = () => {
-            activeChatId = null;
-            chatContainer.innerHTML = '<div class="msg-bubble msg-ai">नमस्ते! मैं <b>JONVA AI</b> हूँ। कुछ नया पूछिए।</div>';
-            toggleDrawer();
-            switchTab('chat');
-        };
+        }
     </script>
 </body>
 </html>
